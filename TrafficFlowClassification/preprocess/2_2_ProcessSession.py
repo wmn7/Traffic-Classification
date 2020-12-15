@@ -13,25 +13,42 @@ dataPath = """../1.DataSet/3_trainDataset/""" # 原始数据路径
 ResultPath = """../1.DataSet/4_AnonymizationDataset/""" # 目标数据文件夹路径
 
 # 进行匿名化的函数
-def customAction(packet):
-    # 匿名化MAC地址
-    try:
-        packet[Ether].dst="00:00:00:00:00:00"
-        packet[Ether].src="00:00:00:00:00:00"
-        # 匿名化IP地址(需要判断是IPv4还是IPv6)
-        if packet[Ether].type==34525: # 0x86dd
-            packet[IPv6].src="0:0:0:0:0:0:0:0"
-            packet[IPv6].dst="0:0:0:0:0:0:0:0"
-        else:
-            packet[IP].src="0.0.0.0"
-            packet[IP].dst="0.0.0.0"
-    except: # 使用VPN无MAC地址
-        if packet[0].version==6: # VPN没有链路层, 第一层是IP
-            packet[IPv6].src="0:0:0:0:0:0:0:0"
-            packet[IPv6].dst="0:0:0:0:0:0:0:0"
-        else:
-            packet[IP].src="0.0.0.0"
-            packet[IP].dst="0.0.0.0"
+def customAction(pcap):
+    # 匿名化信息
+    src_ip = "0.0.0.0"
+    src_ipv6 = "0:0:0:0:0:0:0:0"
+    src_port = 0
+    src_mac = "00:00:00:00:00:00"
+
+    dst_ip = "0.0.0.0"
+    dst_ipv6 = "0:0:0:0:0:0:0:0"
+    dst_port = 0
+    dst_mac = "00:00:00:00:00:00"
+    
+    if 'Ether' in pcap:
+        pcap.src = src_mac
+        pcap.dst = dst_mac
+    if 'IP' in pcap:
+        pcap["IP"].src = src_ip
+        pcap["IP"].dst = dst_ip
+        pcap["IP"].sport = src_port
+        pcap["IP"].dport = dst_port
+    if 'IPv6' in pcap:
+        pcap["IPv6"].src = src_ipv6
+        pcap["IPv6"].dst = dst_ipv6
+        pcap["IPv6"].sport = src_port
+        pcap["IPv6"].dport = dst_port
+    if 'TCP' in pcap:
+        pcap['TCP'].sport = src_port
+        pcap['TCP'].dport = dst_port
+    if 'UDP' in pcap:
+        pcap['UDP'].sport = src_port
+        pcap['UDP'].dport = dst_port
+    if 'ARP' in pcap:
+        pcap["ARP"].psrc = src_ip
+        pcap["ARP"].pdst = dst_ip
+        pcap["ARP"].hwsrc = src_mac
+        pcap["ARP"].hwdst = dst_mac
 
 
 
