@@ -33,7 +33,7 @@ for (root, dirs, files) in os.walk(dataPath):
     if fileNum > 0: # 文件夹内文件的个数>0
         if fileNum > SESSIONS_COUNT_LIMIT_MAX:
             fileList = np.sort(fileList, order='filesize') # 按照文件size从大到小排序
-            fileList = fileList[-6000:] # 只提取前6000个文件
+            fileList = fileList[-SESSIONS_COUNT_LIMIT_MAX:] # 只提取前6000个文件
             fileNum = SESSIONS_COUNT_LIMIT_MAX
         else:
             pass # 还是按照原来的顺序保持不变
