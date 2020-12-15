@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2020-11-01 17:18:25
 @Description: 日志模块
-LastEditTime: 2020-12-15 16:41:21
+@LastEditTime: 2020-12-15 17:00:23
 '''
 import logging
 import logging.handlers
@@ -11,9 +11,8 @@ import os
 filePath = os.path.dirname(os.path.abspath(__file__))  # 获取当前的路径
 ALL_LOG_FILENAME = os.path.join(filePath, 'log', 'all_traffic.log')
 INFO_LOG_FILENAME = os.path.join(filePath, 'log', 'info_traffic.log')
-RL_LOG_FILENAME = os.path.join(filePath, 'log', 'rl_traffic.log') # 记录 RL 的日志
 
-logger = logging.getLogger('Traffic_Scene_Log')
+logger = logging.getLogger('Traffic_Classification_Log')
 
 class stringFilter(logging.Filter):
     def filter(self, record):
@@ -48,18 +47,10 @@ def set_logger():
     info_console_handler.setLevel(logging.INFO)
     info_console_handler.setFormatter(formatter)
 
-    # 创建 RL 的日志
-    rl_file_handler = logging.handlers.RotatingFileHandler(
-        RL_LOG_FILENAME, maxBytes=1048576000, backupCount=3, encoding='utf-8')
-    rl_file_handler.setLevel(logging.INFO)
-    rl_file_handler.setFormatter(formatter)
-    rl_file_handler.addFilter(stringFilter()) # 增加过滤器, 专门保存 RL 相关的内容
-
     # 为日志器添加 handler
     logger.addHandler(all_handler)
     logger.addHandler(info_file_handler)
     logger.addHandler(info_console_handler)
-    logger.addHandler(rl_file_handler)
 
 
 set_logger()
