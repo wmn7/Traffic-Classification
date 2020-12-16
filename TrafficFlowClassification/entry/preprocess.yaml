@@ -2,4 +2,4 @@ pcap_path:
   raw_pcap_path: ./data/test_data # 放最初始的 traffic 文件的路径
 
 tool_path:
-  splitcap_path: ./tool/SplitCap_2-1/SplitCap.exe # splitcap 的路径, 用来将 pcap 分割为 session
+  splitcap_path: ./tool/SplitCap.exe # splitcap 的路径, 用来将 pcap 分割为 session, 地址 https://www.netresec.com/?page=SplitCap
