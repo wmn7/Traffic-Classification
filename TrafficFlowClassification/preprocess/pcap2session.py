@@ -4,7 +4,7 @@
 @Description: 将pcap文件转为session.
 => 对 ./data/CompletePCAs 下每一个文件进行转换
 => 如将./data/CompletePCAs/Chat/aim_chat_3a.pcap 文件进行转换, 每个 pcap 拆分出的 session 会保存在对应的文件夹下
-@LastEditTime: 2020-12-16 13:16:16
+@LastEditTime: 2020-12-16 13:57:24
 '''
 
 import os
@@ -18,6 +18,7 @@ def pcap_to_session(pcap_folder, splitcap_path):
         pcap_folder (str): 放置 pcap 文件的路径
         splitcap_path (str): splitcap.exe 工具所在的路径
     """
+    splitcap_path = os.path.normpath(splitcap_path) # 处理成 windows 下的路径格式
     for (root, dirs, files) in os.walk(pcap_folder):
         # root 是根目录
         # dirs 是目录下的文件夹, 是一个 list
@@ -30,14 +31,15 @@ def pcap_to_session(pcap_folder, splitcap_path):
                 assert pcap_suffix == 'pcap'
             except:
                 logger.warning('查看 pcap 文件的后缀')
-            # pcap2session = "{} -p 100000 -b 100000 -r {} -o {}{}/{}/ -y L7".format(toolPath, pcapPath, sessionPath, pcapFile, pcapName) # 提取L7
+                assert pcap_suffix == 'pcap'
+            os.makedirs(os.path.join(root, pcap_name), exist_ok=True) # 新建文件夹
             prog = subprocess.Popen([splitcap_path, 
                             "-p", "100000",
                             "-b", "100000",
                             "-r", pcap_file_path,
-                            "-o", os.path.join(pcap_file_path, pcap_name),
-                            "-y", "L7"],
+                            "-o", os.path.join(root, pcap_name)], # 只提取应用层可以加上, "-y", "L7"
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            _, _ = prog.communicate()            
+            _, _ = prog.communicate()
+            # logger.info(err.decode('GB2312'))
             logger.info('正在处理文件{}'.format(Ufile))
             
