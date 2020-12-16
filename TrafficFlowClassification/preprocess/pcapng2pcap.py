@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2020-12-14 18:50:39
 @Description: 将数据集中的pcapng转换为pcap文件.
-@LastEditTime: 2020-12-15 19:23:46
+@LastEditTime: 2020-12-16 12:49:23
 '''
 
 # editcap.exe -F libpcap -T ether file.pcapng file.pcap
@@ -31,4 +31,5 @@ def pcapng_to_pcap(path):
                             os.path.abspath(os.path.join(path, output_pcap_name))],
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             _, _ = prog.communicate()
+            # TODO, pcapng 转换之后, 源文件删除
             logger.info("文件 {}, 修改成功.".format(files))
