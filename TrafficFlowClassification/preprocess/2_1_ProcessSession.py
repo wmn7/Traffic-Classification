@@ -16,6 +16,48 @@ dataPath = """../1.DataSet/2_pcap2session/""" # 原始数据路径
 
 SESSIONS_COUNT_LIMIT_MAX = 6000 # 一个pcap提取最多的session
 
+cls_dict = {"Email": ["email1a", "email1b", "email2a", "email2b"],
+            "VPN-Email": ["vpn_email2b", "vpn_email2a"],
+            "Chat": ["AIMchat1", "AIMchat2", "aim_chat_3a", "aim_chat_3b", "facebookchat1", "facebookchat2",
+                     "facebookchat3", "facebook_chat_4a", "facebook_chat_4b", "gmailchat1", "gmailchat2", "gmailchat3",
+                     "hangouts_chat_4a", "hangout_chat_4b", "ICQchat1", "ICQchat2", "icq_chat_3a", "icq_chat_3b",
+                     "skype_chat1a", "skype_chat1b"],
+            "VPN-Chat": ["vpn_skype_chat1b", "vpn_skype_chat1a", "vpn_icq_chat1b", "vpn_icq_chat1a",
+                         "vpn_hangouts_chat1b", "vpn_hangouts_chat1a" , "vpn_facebook_chat1b", "vpn_facebook_chat1a",
+                         "vpn_aim_chat1b", "vpn_aim_chat1a"],
+            "Streaming": ["facebook_video1a", "facebook_video1b", "facebook_video2a", "facebook_video2b",
+                          "hangouts_video1b", "hangouts_video2a", "hangouts_video2b", "netflix1", "netflix2",
+                          "netflix3", "netflix4", "skype_video1a", "skype_video1b", "skype_video2a", "skype_video2b",
+                          "spotify1", "spotify2", "spotify3", "spotify4", "youtube1", "youtube2", "youtube3",
+                          "youtube4", "youtube5", "youtube6", "vimeo3", "vimeo4", "vimeo2", "vimeo1"],
+            "VPN-Streaming": ["vpn_youtube_A", "vpn_vimeo_B", "vpn_vimeo_A", "vpn_spotify_A", "vpn_netflix_A",
+                              "torYoutube1", "torYoutube2", "torYoutube3", "torVimeo3", "torVimeo2", "torVimeo1"],
+            "File transfer": ["ftps_down_1a", "ftps_down_1b", "ftps_up_2a", "ftps_up_2b", "scp1", "scpDown1",
+                              "scpDown2", "scpDown3", "scpDown4", "scpDown5", "scpDown6", "scpUp1", "scpUp2", "scpUp3",
+                              "scpUp5", "scpUp6", "sftp1", "sftpDown1", "sftpDown2", "sftpUp1", "sftp_down_3a",
+                              "sftp_down_3b", "sftp_up_2a", "sftp_up_2b", "skype_file1", "skype_file2", "skype_file3",
+                              "skype_file4", "skype_file5", "skype_file6", "skype_file7", "skype_file8"],
+            "VPN-File transfer": ["vpn_skype_files1b", "vpn_skype_files1a", "vpn_sftp_B", "vpn_sftp_A", "vpn_ftps_B",
+                                  "vpn_ftps_A"],
+            "VoIP": ["facebook_audio1a", "facebook_audio1b", "facebook_audio2a", "facebook_audio2b", "facebook_audio3",
+                     "facebook_audio4", "hangouts_audio1a", "hangouts_audio1b", "hangouts_audio2a", "hangouts_audio2b",
+                     "hangouts_audio3", "hangouts_audio4", "skype_audio1a", "skype_audio1b", "skype_audio2a",
+                     "skype_audio2b", "skype_audio3", "skype_audio4", "voipbuster_4b", "voipbuster_4a", "voipbuster3b",
+                     "voipbuster2b", "voipbuster1b"],
+            "VPN-VoIP": ["vpn_voipbuster1b", "vpn_voipbuster1a", "vpn_skype_audio2", "vpn_skype_audio1",
+                         "vpn_hangouts_audio2", "vpn_hangouts_audio1", "vpn_facebook_audio2"],
+            "P2P": ["Torrent01"],
+            "VPN-P2P": ["vpn_bittorrent"],
+            }
+            
+for cls in cls_dict:
+    folder_path = os.path.join(dataPath, cls)
+    os.makedirs(folder_path)
+    for application in cls_dict[cls]:
+        src_path = os.path.join(dataPath, application + ".pcap")
+        os.rename(src_path, os.path.join(folder_path, application + ".pcap"))
+
+
 # 循环读取文件夹中所有的pcapng文件
 for (root, dirs, files) in os.walk(dataPath):
     fileNum = 0 # 统计文件夹内文件个数
