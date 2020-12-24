@@ -16,6 +16,7 @@ dataPath = """../1.DataSet/2_pcap2session/""" # 原始数据路径
 
 SESSIONS_COUNT_LIMIT_MAX = 6000 # 一个pcap提取最多的session
 
+# 转移文件
 cls_dict = {"Email": ["email1a", "email1b", "email2a", "email2b"],
             "VPN-Email": ["vpn_email2b", "vpn_email2a"],
             "Chat": ["AIMchat1", "AIMchat2", "aim_chat_3a", "aim_chat_3b", "facebookchat1", "facebookchat2",
