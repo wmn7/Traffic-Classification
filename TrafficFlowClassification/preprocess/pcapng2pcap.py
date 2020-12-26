@@ -2,19 +2,19 @@
 @Author: WANG Maonan
 @Date: 2020-12-14 18:50:39
 @Description: 将数据集中的pcapng转换为pcap文件.
-@LastEditTime: 2020-12-16 12:49:23
+editcap.exe 的用法, 
+==> editcap.exe -F libpcap -T ether file.pcapng file.pcap
+==> 需要将 editcap.exe 所在的路径 (C:/Program Files/Wireshark) 添加在环境目录中
+@LastEditTime: 2020-12-25 18:45:15
 '''
 
-# editcap.exe -F libpcap -T ether file.pcapng file.pcap
-# 修改path(为pcapng存放的位置, 将该文件放在C:/Program Files/Wireshark下, 以管理员身份进行运行),
-# ==============================================================================
-
+from math import log
 import os
 import subprocess
 from TrafficFlowClassification.TrafficLog.setLog import logger
 
 def pcapng_to_pcap(path):
-    """将文件夹中所有的 pcapng 文件转换为 pcap 文件
+    """将文件夹 path 中所有的 pcapng 文件转换为 pcap 文件
 
     Args:
         path (str): pcapng 文件所在的路径
@@ -31,5 +31,8 @@ def pcapng_to_pcap(path):
                             os.path.abspath(os.path.join(path, output_pcap_name))],
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             _, _ = prog.communicate()
-            # TODO, pcapng 转换之后, 源文件删除
+            os.remove(os.path.abspath(os.path.join(path, files))) # pcapng 转换之后, 源文件删除
             logger.info("文件 {}, 修改成功.".format(files))
+    
+    logger.info('将所以的 pcapng 文件转换为 pcap 文件.')
+    logger.info('============\n')
