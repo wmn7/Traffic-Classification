@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2020-12-15 16:53:21
 @Description: 对原始流量文件进行预处理
-@LastEditTime: 2020-12-26 14:21:27
+@LastEditTime: 2020-12-27 15:11:11
 '''
 import os
 import yaml
@@ -10,7 +10,6 @@ import shutil
 from easydict import EasyDict
 
 from TrafficFlowClassification.TrafficLog.setLog import logger
-
 
 from TrafficFlowClassification.preprocess.pcapng2pcap import pcapng_to_pcap
 from TrafficFlowClassification.preprocess.pcapTransfer import pcap_transfer
@@ -62,4 +61,9 @@ def preprocess_pipeline():
     # pcapng_to_pcap(cfg.pcap_path.new_pcap_path) # 将 pcapng 转换为 pcap
     # pcap_transfer(cfg.pcap_path.new_pcap_path, cfg.pcap_path.new_pcap_path) # 将文件放在指定文件夹中
     # pcap_to_session(cfg.pcap_path.new_pcap_path, cfg.tool_path.splitcap_path) # 将 pcap 转换为 session
-    anonymize(cfg.pcap_path.new_pcap_path) # 对指定文件夹内的所有 pcap 进行匿名化处理
+    # anonymize(cfg.pcap_path.new_pcap_path) # 对指定文件夹内的所有 pcap 进行匿名化处理
+
+    logger.info('开始调试')
+
+if __name__ == "__main__":
+    preprocess_pipeline()
