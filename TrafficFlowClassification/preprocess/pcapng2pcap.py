@@ -34,5 +34,5 @@ def pcapng_to_pcap(path):
             os.remove(os.path.abspath(os.path.join(path, files))) # pcapng 转换之后, 源文件删除
             logger.info("文件 {}, 修改成功.".format(files))
     
-    logger.info('将所以的 pcapng 文件转换为 pcap 文件.')
+    logger.info('将所有的 pcapng 文件转换为 pcap 文件.')
     logger.info('============\n')
