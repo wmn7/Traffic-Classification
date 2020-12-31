@@ -62,7 +62,7 @@ def pcap_transfer(before_folder_path, new_pcap_path):
             pcap_name_file = '{}.pcap'.format(pcap_name)
             src_path = os.path.join(before_folder_path, pcap_name_file) # pcap 文件的原始地址
             dts_path = os.path.join(folder_path, pcap_name_file)
-            shutil.move(src_path, dts_path) # 移动文件
+            os.rename(src_path, dts_path) # 移动文件
             logger.info('文件移动, {} --> {}'.format(src_path, dts_path))
     
     logger.info('文件移动完毕.')

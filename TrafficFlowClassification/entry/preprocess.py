@@ -40,7 +40,7 @@ def transfer_pcap(before_path, after_path):
             logger.info('忽略文件 {}'.format(src_path))
         else:
             logger.info('开始转移文件, {} --> {}'.format(src_path, dst_path))
-            shutil.copy(src_path, dst_path)
+            os.rename(src_path, dst_path)
     logger.info('文件全部转移完成')
     logger.info('=============\n')
 
