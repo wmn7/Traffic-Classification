@@ -1,3 +1,7 @@
+# 不需要 npz, npy
+*.npy
+*.npz
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
