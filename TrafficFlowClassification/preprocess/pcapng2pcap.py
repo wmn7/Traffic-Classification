@@ -5,10 +5,9 @@
 editcap.exe 的用法, 
 ==> editcap.exe -F libpcap -T ether file.pcapng file.pcap
 ==> 需要将 editcap.exe 所在的路径 (C:/Program Files/Wireshark) 添加在环境目录中
-@LastEditTime: 2020-12-25 18:45:15
+@LastEditTime: 2020-12-28 16:48:09
 '''
 
-from math import log
 import os
 import subprocess
 from TrafficFlowClassification.TrafficLog.setLog import logger
