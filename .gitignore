@@ -1,3 +1,5 @@
+preprocess_data/
+
 # 不需要 npz, npy
 *.npy
 *.npz
