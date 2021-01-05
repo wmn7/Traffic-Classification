@@ -9,7 +9,6 @@
 import os
 import shutil
 
-from numpy.lib.shape_base import dsplit
 from TrafficFlowClassification.TrafficLog.setLog import logger
 
 PCAP_LABEL_DICT = {
