@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-05 11:08:45
 @Description: 将原始的数据划分训练集与测试集, 返回训练集和测试集的路径地址
-@LastEditTime: 2021-01-05 15:37:57
+@LastEditTime: 2021-01-05 18:02:58
 '''
 import os
 from sklearn.model_selection import train_test_split
@@ -47,7 +47,12 @@ def get_file_path(folder_path):
     return pcap_dict
 
 def get_train_test(folder_path, train_size):
-    """返回训练集和测试集的 pcap 的路径
+    """返回训练集和测试集的 pcap 的路径, 这里返回的数据格式如下,
+    {
+        'Chat': ['./data/preprocess_data\\Chat\\AIMchat1\\AIMchat1.pcap.UDP_131-202-240-87_137_131-202-243-255_137.pcap', ...],
+        'Email': [...],
+        ...
+    }
 
     Args:
         folder_path (str): 包含 pcap 文件的根目录
@@ -61,7 +66,7 @@ def get_train_test(folder_path, train_size):
         test_dict[pcap_category] = []
         for _, pcaps_list in pcap_category_dict.items():
             if len(pcaps_list)>3:
-                X_train, X_test = train_test_split(pcaps_list, train_size=train_size)
+                X_train, X_test = train_test_split(pcaps_list, train_size=train_size, shuffle=True)
                 train_dict[pcap_category].extend(X_train)
                 test_dict[pcap_category].extend(X_test)
     return train_dict, test_dict
