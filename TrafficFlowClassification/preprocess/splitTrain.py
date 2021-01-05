@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-05 11:08:45
 @Description: 将原始的数据划分训练集与测试集, 返回训练集和测试集的路径地址
-@LastEditTime: 2021-01-05 12:58:06
+@LastEditTime: 2021-01-05 15:37:57
 '''
 import os
 from sklearn.model_selection import train_test_split
@@ -50,7 +50,7 @@ def get_train_test(folder_path, train_size):
     """返回训练集和测试集的 pcap 的路径
 
     Args:
-        folder_path ([type]): [description]
+        folder_path (str): 包含 pcap 文件的根目录
         train_size (float): 0-1 之间的一个数, 表示训练集所占的比例
     """
     train_dict = {} # 训练集的 pcap 路径

@@ -4,3 +4,7 @@ pcap_path:
 
 tool_path:
   splitcap_path: ./tool/SplitCap.exe # splitcap 的路径, 用来将 pcap 分割为 session, 地址 https://www.netresec.com/?page=SplitCap
+
+train:
+  TRIMED_FILE_LEN: 784 # 最后减裁文件的大小
+  train_size: 0.9 # 训练集所占比例
