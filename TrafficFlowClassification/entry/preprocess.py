@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2020-12-15 16:53:21
 @Description: 对原始流量文件进行预处理
-@LastEditTime: 2020-12-27 15:11:11
+@LastEditTime: 2021-01-05 10:53:32
 '''
 import os
 import yaml
@@ -40,18 +40,18 @@ def transfer_pcap(before_path, after_path):
             logger.info('忽略文件 {}'.format(src_path))
         else:
             logger.info('开始转移文件, {} --> {}'.format(src_path, dst_path))
-            os.rename(src_path, dst_path)
+            shutil.copy(src_path, dst_path)
     logger.info('文件全部转移完成')
     logger.info('=============\n')
 
 def preprocess_pipeline():
     """对流量进行预处理, 处理流程为:
-    0. 将所有流量文件转移到新的文件夹
+    0. 将所有流量文件转移到新的文件夹, 这时候没有细分, 就是所有文件进行转移
     1. 接着将 pcapng 文件转换为 pcap 文件
     2. 接着将不同的流量新建文件夹, 分成不同的类别, pcap transfer
     3. 接着将 pcap 文件按照五元组分为不同的 session, 使用 SplitCap 来完成 (这一步可以选择, 提取 all 或是 L7)
     4. 对 session 进行处理, 匿名化处理, ip, mac, port
-    5. 对于每一类的文件, 划分训练集和测试集
+    5. 对于每一类的文件, 划分训练集和测试集, 获得每一类的
     6. 将文件切割为指定大小, 最终保存为 npy 的格式
     """
     cfg = setup_config() # 获取 config 文件
@@ -63,7 +63,6 @@ def preprocess_pipeline():
     # pcap_to_session(cfg.pcap_path.new_pcap_path, cfg.tool_path.splitcap_path) # 将 pcap 转换为 session
     # anonymize(cfg.pcap_path.new_pcap_path) # 对指定文件夹内的所有 pcap 进行匿名化处理
 
-    logger.info('开始调试')
 
 if __name__ == "__main__":
     preprocess_pipeline()
