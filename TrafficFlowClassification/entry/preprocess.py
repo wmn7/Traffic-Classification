@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2020-12-15 16:53:21
 @Description: 对原始流量文件进行预处理
-@LastEditTime: 2021-01-05 18:37:08
+@LastEditTime: 2021-01-06 10:37:26
 '''
 import os
 import yaml
@@ -68,8 +68,9 @@ def preprocess_pipeline():
     # anonymize(cfg.pcap_path.new_pcap_path) # 对指定文件夹内的所有 pcap 进行匿名化处理
     # pcap_trim(cfg.pcap_path.new_pcap_path, cfg.train.TRIMED_FILE_LEN) # 将所有的 pcap 转换为一样的大小
     train_dict, test_dict = get_train_test(cfg.pcap_path.new_pcap_path, cfg.train.train_size) # 返回 train 和 test 的 dict
-    save_pcap2npy(test_dict, 'test') # 保存 test 的 npy 文件
-    save_pcap2npy(train_dict, 'train') # 保存 train 的 npy 文件
+    label2index = save_pcap2npy(train_dict, 'train') # 保存 train 的 npy 文件
+    save_pcap2npy(test_dict, 'test', label2index) # 保存 test 的 npy 文件
+    logger.info('index 与 label 的关系, {}'.format(label2index))
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-05 16:07:22
 @Description: 将 pcap 文件保存为 npy, 用作最后的训练
-@LastEditTime: 2021-01-05 18:39:19
+@LastEditTime: 2021-01-06 10:48:37
 '''
 import binascii
 import numpy as np
@@ -25,7 +25,7 @@ def getIntfrom_pcap(filename):
     fh = np.uint8(fh)
     return fh
 
-def save_pcap2npy(pcap_dict, file_name):
+def save_pcap2npy(pcap_dict, file_name, label2index = {}):
     """将 pcap 文件分为训练集和测试集, 并进行保存. 
     => pcap 数据从 二进制 转换为 十进制, 调用 getIntfrom_pcap 函数
     => 将数据保存在 data 中, data = [[pcap, label], [], ..]
@@ -36,11 +36,10 @@ def save_pcap2npy(pcap_dict, file_name):
         file_name (str): 最后保存的文件的名称
     """
     data = []
-    label2index = {} # 保存 label 和 index 之间的关系
     index = 0
     for label, pcap_file_list in pcap_dict.items():
+        logger.info('模式, {}, 正在将 {} 的 pcap 保存为 npy'.format(file_name, label))
         if label not in label2index:
-            logger.info('模式, {}, 正在将 {} 的 pcap 保存为 npy'.format(file_name, label))
             label2index[label] = index
             index = index + 1
         for pcap_file in pcap_file_list:
@@ -59,3 +58,5 @@ def save_pcap2npy(pcap_dict, file_name):
 
     logger.info('将 {} 的数据保存为 npy !'.format(file_name))
     logger.info('==========\n')
+
+    return label2index
