@@ -2,9 +2,8 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 10:57:54
 @Description: 1 维卷积模型, 基础模型
-@LastEditTime: 2021-01-07 11:24:48
+@LastEditTime: 2021-01-07 12:10:47
 '''
-import torch
 import torch.nn as nn
 
 class Cnn1d(nn.Module):
