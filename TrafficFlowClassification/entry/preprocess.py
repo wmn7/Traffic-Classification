@@ -2,14 +2,14 @@
 @Author: WANG Maonan
 @Date: 2020-12-15 16:53:21
 @Description: 对原始流量文件进行预处理
-@LastEditTime: 2021-01-07 12:51:30
+@LastEditTime: 2021-01-07 12:54:44
 '''
 import os
 import shutil
 
 from TrafficFlowClassification.TrafficLog.setLog import logger
-
 from TrafficFlowClassification.utils.setConfig import setup_config
+
 from TrafficFlowClassification.preprocess.pcapng2pcap import pcapng_to_pcap
 from TrafficFlowClassification.preprocess.pcapTransfer import pcap_transfer
 from TrafficFlowClassification.preprocess.pcap2session import pcap_to_session
