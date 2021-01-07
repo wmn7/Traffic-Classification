@@ -2,14 +2,15 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 15:02:23
 @Description: 一些工具函数
-@LastEditTime: 2021-01-07 17:45:52
+@LastEditTime: 2021-01-07 21:11:20
 '''
 import shutil
 import torch
 
 
 class AverageMeter(object):
-    """Computes and stores the average and current value"""
+    """Computes and stores the average and current value
+    """
 
     def __init__(self):
         self.reset()
@@ -44,9 +45,17 @@ def accuracy(output, target, topk=(1,)):
 
 
 def save_checkpoint(state, is_best, filename='alex_checkpoint.pth'):
-    torch.save(state, filename)
+    """保存中间模型, 暂时只保存最优的一个结果
+
+    Args:
+        state ([type]): [description]
+        is_best (bool): [description]
+        filename (str, optional): [description]. Defaults to 'alex_checkpoint.pth'.
+    """
+    # torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename, 'alex_model_best.pth')
+        torch.save(state, filename)
+        # shutil.copyfile(filename, './checkpoint/alex_model_best.pth')
 
 
 def adjust_learning_rate(optimizer, epoch, init_lr):

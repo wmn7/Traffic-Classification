@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 15:04:21
 @Description: 训练模型的整个流程
-@LastEditTime: 2021-01-07 18:04:21
+@LastEditTime: 2021-01-07 21:12:57
 '''
 import torch
 from torch import nn, optim
@@ -12,7 +12,9 @@ from TrafficFlowClassification.utils.setConfig import setup_config
 
 from TrafficFlowClassification.models.cnn1d import cnn1d
 from TrafficFlowClassification.train.trainProcess import train_process
+from TrafficFlowClassification.train.validateProcess import validate_process
 from TrafficFlowClassification.data.dataLoader import data_loader
+from TrafficFlowClassification.utils.helper import adjust_learning_rate, save_checkpoint
 
 def train_pipeline():
     cfg = setup_config() # 获取 config 文件
@@ -33,20 +35,21 @@ def train_pipeline():
     #     validate(val_loader, model, criterion, args.print_freq)
     #     return
 
+    best_prec1 = 0
     for epoch in range(cfg.train.epochs):
-        adjust_learning_rate(optimizer, epoch, args.lr) # 动态调整学习率
+        adjust_learning_rate(optimizer, epoch, cfg.train.lr) # 动态调整学习率
 
-        train_process(train_loader, model, criterion, optimizer, epoch, 2) # train for one epoch
-        prec1, prec5 = validate(val_loader, model, criterion, args.print_freq) # evaluate on validation set
+        train_process(train_loader, model, criterion, optimizer, epoch, device, 80) # train for one epoch
+        prec1 = validate_process(test_loader, model, criterion, device, 20) # evaluate on validation set
 
         # remember the best prec@1 and save checkpoint
         is_best = prec1 > best_prec1
         best_prec1 = max(prec1, best_prec1)
 
+        # 保存最优的模型
         save_checkpoint({
             'epoch': epoch + 1,
-            'arch': args.arch,
             'state_dict': model.state_dict(),
             'best_prec1': best_prec1,
             'optimizer': optimizer.state_dict()
-        }, is_best, args.arch + '.pth')
+        }, is_best, cfg.train.model_name + '.pth')
