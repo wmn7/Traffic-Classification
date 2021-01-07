@@ -1,0 +1,15 @@
+pcap_path:
+  raw_pcap_path: ./data/CompletePCAPs # 放最初始的 traffic 文件的路径
+  new_pcap_path: ./data/preprocess_data # 放置处理好之后的数据
+
+tool_path:
+  splitcap_path: ./tool/SplitCap.exe # splitcap 的路径, 用来将 pcap 分割为 session, 地址 https://www.netresec.com/?page=SplitCap
+
+train:
+  train_pcap: ./data/npy_data/784_session_all/train-pcap.npy # 训练集 pcap 的地址
+  train_label: ./data/npy_data/784_session_all/train-labels.npy # 训练集 label 的地址
+  test_pcap: ./data/npy_data/784_session_all/test-pcap.npy # 测试集 pcap 的地址
+  test_label: ./data/npy_data/784_session_all/test-labels.npy # 测试集 label 的地址
+  TRIMED_FILE_LEN: 784 # 最后减裁文件的大小
+  train_size: 0.9 # 训练集所占比例
+  # {'Chat': 0, 'Email': 1, 'FT': 2, 'P2P': 3, 'Streaming': 4, 'VoIP': 5, 'VPN_Chat': 6, 'VPN_Email': 7, 'VPN_FT': 8, 'VPN_P2P': 9, 'VPN_Streaming': 10, 'VPN_VoIP': 11}
