@@ -2,13 +2,13 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 10:57:54
 @Description: 1 维卷积模型, 基础模型
-@LastEditTime: 2021-01-07 12:10:47
+@LastEditTime: 2021-01-07 18:39:06
 '''
 import torch.nn as nn
 
 class Cnn1d(nn.Module):
     def __init__(self, num_classes=12):
-        super(cnn1d, self).__init__()
+        super(Cnn1d, self).__init__()
         # 卷积层+池化层
         self.features = nn.Sequential(
             nn.Conv1d(kernel_size=25, in_channels=1, out_channels=32, stride=1, padding=12), # (1,784)->(32,784)

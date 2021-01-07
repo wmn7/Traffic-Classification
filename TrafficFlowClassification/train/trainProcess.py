@@ -2,9 +2,8 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 17:03:15
 @Description: 模型训练的流程, 这里是一个 epoch 的训练流程
-@LastEditTime: 2021-01-07 18:03:53
+@LastEditTime: 2021-01-07 20:50:44
 '''
-
 from TrafficFlowClassification.utils.helper import AverageMeter, accuracy
 from TrafficFlowClassification.TrafficLog.setLog import logger
 
@@ -37,13 +36,13 @@ def train_process(train_loader, model, criterion, optimizer, epoch, device, prin
         # 计算准确率, 记录 loss 和 accuracy
         prec1 = accuracy(output.data, target)
         losses.update(loss.item(), input.size(0))
-        top1.update(prec1[0], input.size(0))
+        top1.update(prec1[0].item(), input.size(0))
 
         # 反向传播
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
-        if i % print_freq == 0:
-            logger('Epoch: [{0}][{1}/{2}], Loss {loss.val:.4f} ({loss.avg:.4f}), Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
+        
+        if (i+1) % print_freq == 0:
+            logger.info('Epoch: [{0}][{1}/{2}], Loss {loss.val:.4f} ({loss.avg:.4f}), Prec@1 {top1.val:.3f} ({top1.avg:.3f})'.format(
                 epoch, i, len(train_loader), loss=losses, top1=top1))
