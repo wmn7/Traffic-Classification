@@ -2,15 +2,14 @@
 @Author: WANG Maonan
 @Date: 2020-12-15 16:53:21
 @Description: 对原始流量文件进行预处理
-@LastEditTime: 2021-01-07 11:40:14
+@LastEditTime: 2021-01-07 12:51:30
 '''
 import os
-import yaml
 import shutil
-from easydict import EasyDict
 
 from TrafficFlowClassification.TrafficLog.setLog import logger
 
+from TrafficFlowClassification.utils.setConfig import setup_config
 from TrafficFlowClassification.preprocess.pcapng2pcap import pcapng_to_pcap
 from TrafficFlowClassification.preprocess.pcapTransfer import pcap_transfer
 from TrafficFlowClassification.preprocess.pcap2session import pcap_to_session
@@ -19,13 +18,6 @@ from TrafficFlowClassification.preprocess.pcapTrim import pcap_trim
 from TrafficFlowClassification.preprocess.splitTrain import get_train_test
 from TrafficFlowClassification.preprocess.pcap2npy import save_pcap2npy
 
-def setup_config():
-    """获取配置信息
-    """
-    with open(os.path.join(os.path.dirname(__file__), './traffic_classification.yaml'), encoding='utf8') as f:
-        cfg = yaml.safe_load(f)
-    cfg = EasyDict(cfg)
-    return cfg
 
 def transfer_pcap(before_path, after_path):
     """将 before_path 中的所以文件转移到 after_path 中去
