@@ -55,7 +55,7 @@ def session_anonymize(session_path):
     Args:
         filePath (str): session 所在的路径
     """
-    packets = sniff(offline=session_path, prn=customAction, store=True)
+    packets = sniff(offline=session_path, prn=customAction, store=True) # 这里的数据类型是 scapy.plist.PacketList
     return packets
 
 def anonymize(folder_path):
