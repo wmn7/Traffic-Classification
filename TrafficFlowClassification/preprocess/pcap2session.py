@@ -4,7 +4,7 @@
 @Description: 将pcap文件转为session.
 => 对 ./data/CompletePCAs 下每一个文件进行转换
 => 如将./data/CompletePCAs/Chat/aim_chat_3a.pcap 文件进行转换, 每个 pcap 拆分出的 session 会保存在对应的文件夹下
-@LastEditTime: 2020-12-25 18:42:38
+@LastEditTime: 2021-02-01 15:12:56
 '''
 
 import os
@@ -43,4 +43,6 @@ def pcap_to_session(pcap_folder, splitcap_path):
             # logger.info(err.decode('GB2312'))
             os.remove(pcap_file_path) # 删除原始的 pcap 文件
             logger.info('处理完成文件 {}'.format(Ufile))
+    logger.info('完成 pcap 转换为 session.')
+    logger.info('============\n')
             

@@ -2,7 +2,7 @@
 @Author: WANG Maonan, Yanhui Wu
 @Date: 2020-12-26 13:23:34
 @Description: 对 session 中所有 packet 的匿名化处理
-@LastEditTime: 2021-02-01 13:23:19
+@LastEditTime: 2021-02-01 18:32:40
 '''
 import os
 from scapy.all import sniff, wrpcap
@@ -50,17 +50,13 @@ def customAction(pcap):
 
 def session_anonymize(session_path):
     """对一个 session 进行匿名化处理, 逐个处理 session 中的每一个 packet; 
-    这里如果一个 pcap 较大, 会出现 MemoryError 的问题, 这里设置 sniff 中 store=False 来不保存信息.
+    这里如果一个 pcap 较大, 会出现 MemoryError 的问题.
 
     Args:
         filePath (str): session 所在的路径
     """
-    packets = []
-    # 逐个packet进行转换
-    for sniffed_packet in sniff(offline=session_path, prn=customAction, store=False):
-        packets.append(sniffed_packet)
+    packets = sniff(offline=session_path, prn=customAction, store=True)
     return packets
-
 
 def anonymize(folder_path):
     """将 folder_path 中所有的 session 全部进行匿名化, 同时删除一个 session 少于 3 个 packet 的 session
