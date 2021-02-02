@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-05 16:48:42
 @Description: 对 pcap 文件进行减裁, 使其转换为指定的大小
-@LastEditTime: 2021-02-01 13:49:29
+@LastEditTime: 2021-02-02 10:42:45
 '''
 
 import os
@@ -17,6 +17,7 @@ class collect_pcap_size(object):
         ...
     }
     即为每一个类别的 pcap 中 pcap 文件的大小
+    # TODO, 希望再统计一下原始 package 的数量信息
     """
     def __init__(self) -> None:
         self.pcaps_length = {}
