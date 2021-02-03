@@ -2,8 +2,10 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 10:57:54
 @Description: 1 维卷积模型, 基础模型
-@LastEditTime: 2021-01-07 18:39:06
+@LastEditTime: 2021-02-03 14:11:47
 '''
+import os
+import torch
 import torch.nn as nn
 
 class Cnn1d(nn.Module):
@@ -43,7 +45,8 @@ def cnn1d(pretrained=False, **kwargs):
     """
     model = Cnn1d(**kwargs)
     if pretrained:
-        # model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
-        # model.load_state_dict(torch.load(os.path.join(models_dir, model_name))) # TODO 增加预训练的模型
-        pass
+        models_dir = './checkpoint'
+        model_name = 'cnn1d.pth'
+        checkpoint = torch.load(os.path.join(models_dir, model_name))
+        model.load_state_dict(checkpoint['state_dict'])
     return model

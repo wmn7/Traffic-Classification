@@ -2,8 +2,9 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 17:03:15
 @Description: 模型训练的流程, 这里是一个 epoch 的训练流程
-@LastEditTime: 2021-01-07 20:50:44
+@LastEditTime: 2021-02-02 19:44:46
 '''
+
 from TrafficFlowClassification.utils.helper import AverageMeter, accuracy
 from TrafficFlowClassification.TrafficLog.setLog import logger
 
