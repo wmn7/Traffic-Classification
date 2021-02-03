@@ -2,18 +2,17 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 17:03:31
 @Description: 模型检测的流程, 这里会使用
-@LastEditTime: 2021-01-07 21:05:55
+@LastEditTime: 2021-02-03 14:40:15
 '''
 import torch
 
 from TrafficFlowClassification.utils.helper import AverageMeter, accuracy
 from TrafficFlowClassification.TrafficLog.setLog import logger
 
-
 def validate_process(val_loader, model, criterion, device, print_freq):
     losses = AverageMeter()
     top1 = AverageMeter()
-
+    
     model.eval()  # switch to evaluate mode
 
     for i, (input, target) in enumerate(val_loader):
