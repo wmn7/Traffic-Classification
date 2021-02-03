@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 10:57:54
 @Description: 1 维卷积模型, 基础模型
-@LastEditTime: 2021-02-03 14:11:47
+@LastEditTime: 2021-02-03 16:10:28
 '''
 import os
 import torch
@@ -36,7 +36,7 @@ class Cnn1d(nn.Module):
         x = self.classifier(x) # 分类层, 用来分类
         return x
 
-def cnn1d(pretrained=False, **kwargs):
+def cnn1d(model_path, pretrained=False, **kwargs):
     """
     CNN 1D model architecture 
 
@@ -45,8 +45,6 @@ def cnn1d(pretrained=False, **kwargs):
     """
     model = Cnn1d(**kwargs)
     if pretrained:
-        models_dir = './checkpoint'
-        model_name = 'cnn1d.pth'
-        checkpoint = torch.load(os.path.join(models_dir, model_name))
+        checkpoint = torch.load(model_path)
         model.load_state_dict(checkpoint['state_dict'])
     return model

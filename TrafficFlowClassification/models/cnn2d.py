@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-02-02 18:02:52
 @Description: 二维卷积模型, 用来进行流量分类
-@LastEditTime: 2021-02-03 14:11:17
+@LastEditTime: 2021-02-03 16:11:50
 '''
 import os
 import torch
@@ -38,7 +38,7 @@ class Cnn2d(nn.Module):
         x = self.classifier(x) # 分类层, 用来分类
         return x
 
-def cnn2d(pretrained=False, **kwargs):
+def cnn2d(model_path, pretrained=False, **kwargs):
     """
     CNN 2D model architecture 
 
@@ -48,9 +48,7 @@ def cnn2d(pretrained=False, **kwargs):
     model = Cnn2d(**kwargs)
     if pretrained:
         # model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
-        models_dir = './checkpoint'
-        model_name = 'cnn2d.pth'
-        checkpoint = torch.load(os.path.join(models_dir, model_name))
+        checkpoint = torch.load(model_path)
         model.load_state_dict(checkpoint['state_dict'])
         pass
     return model
