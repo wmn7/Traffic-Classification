@@ -1,23 +1,33 @@
+'''
+@Author: WANG Maonan
+@Date: 2020-12-14 18:50:39
+@Description: 计算 pcap 文件的 26 个统计信息
+@LastEditTime: 2021-02-04 17:15:48
+'''
+
 import os, statistics
 from scapy.all import *
 
 class FeaturesCalc():
 
-    def __init__(self, flow_type, min_window_size=10):
-        self.flow_type = flow_type # 这个会和label有关
-
+    def __init__(self, min_window_size=10):
         self.min_window_size = int(min_window_size)
         assert self.min_window_size > 0, "Valore non valido per min_windows_size. Deve essere maggiore di 0."
 
-        self.features_name = ["FileName", "Avg_syn_flag", "Avg_urg_flag", "Avg_fin_flag", "Avg_ack_flag", "Avg_psh_flag", "Avg_rst_flag", "Avg_DNS_pkt", "Avg_TCP_pkt",
+        self.features_name = ["Avg_syn_flag", "Avg_urg_flag", "Avg_fin_flag", "Avg_ack_flag", "Avg_psh_flag", "Avg_rst_flag", "Avg_DNS_pkt", "Avg_TCP_pkt",
         "Avg_UDP_pkt", "Avg_ICMP_pkt", "Duration_window_flow", "Avg_delta_time", "Min_delta_time", "Max_delta_time", "StDev_delta_time",
         "Avg_pkts_lenght", "Min_pkts_lenght", "Max_pkts_lenght", "StDev_pkts_lenght", "Avg_small_payload_pkt", "Avg_payload", "Min_payload",
-        "Max_payload", "StDev_payload", "Avg_DNS_over_TCP", "Num_pkts", "Label"]
+        "Max_payload", "StDev_payload", "Avg_DNS_over_TCP", "Num_pkts"]
 
         self.total_packets = 0
         self.nb_samples = 0
 
-    def compute_features(self, packets_list, filename, label):
+    def compute_features(self, packets_list):
+        """主要计算 feature 的函数
+
+        Args:
+            packets_list: 多个 packet 组成的 list, 通常使用 scapy 读取一个 session, 返回的类型就是 scapy.plist.PacketList
+        """
 
         def increment_sample_nb(nb):
             self.nb_samples += nb
@@ -29,7 +39,7 @@ class FeaturesCalc():
             if (len(list_of_values) == 0):
                 return 0.0
             else:
-                return float(sum(list_of_values) / self.get_min_window_size())
+                return float(sum(list_of_values) / len(packets_list))
 
         def compute_min(list_of_values):
             if (len(list_of_values) == 0):
@@ -95,7 +105,8 @@ class FeaturesCalc():
 
         #Calcola la durata del flusso di pacchetti.
         def compute_duration_flow(packets_list):
-            return packets_list[len(packets_list) - 1].time - packets_list[0].time
+            duration_time = packets_list[len(packets_list) - 1].time - packets_list[0].time
+            return float(duration_time)
 
         # Calcola la grandezza in byte di ogni pacchetto in una lista di pacchetti
         def packets_bytes_lenght(packets_list):
@@ -297,18 +308,13 @@ class FeaturesCalc():
             dnsOverTcpRatioNormalized = compute_avg(DNS_over_TCP_ratio(packets_list))
 
             # 这个row是最后返回的特征
-            row = [filename, syn_avg, urg_avg, fin_avg, ack_avg, psh_avg, rst_avg, dns_pkt, tcp_pkt, udp_pkt, icmp_pkt, durationFlow, avgTimeFlow,
+            row = [syn_avg, urg_avg, fin_avg, ack_avg, psh_avg, rst_avg, dns_pkt, tcp_pkt, udp_pkt, icmp_pkt, durationFlow, avgTimeFlow,
                     minTimeFlow, maxTimeFlow, stdevTimeFlow, pktLenghtAvg, pktLenghtMin, pktLenghtMax, pktLenghtStDev, smallPktPayloadAvg,
-                    avgPayload, minPayload, maxPayload, stDevPayload, dnsOverTcpRatioNormalized, len(packets_list), label]
+                    avgPayload, minPayload, maxPayload, stDevPayload, dnsOverTcpRatioNormalized, len(packets_list)]
 
             increment_sample_nb(1)
             update_received_pkts(len(packets_list))
-            # --------------
-            # 打印一下相关信息
-            # --------------
-            # print(row) # 打印出所有计算的特征
-            # print(self.get_min_window_size()) # 打印出pcap的数量
-            # print('-'*10)
+
             return row
 
     def get_total_pkts(self):
@@ -334,3 +340,11 @@ class FeaturesCalc():
 
     def get_features_name(self):
         return self.features_name
+    
+if __name__ == "__main__":
+    # 测试计算 pcap 统计信息
+    pcapPath = './data/preprocess_data/Chat/aim_chat_3a/aim_chat_3a.pcap.TCP_64-12-27-65_443_131-202-240-87_64714.pcap'
+    featuresCalc = FeaturesCalc(min_window_size=1) # 初始化
+    pkts = rdpcap(pcapPath) # 一整个文件中有多个pcap文件, 读取之后会是一个list
+    features = featuresCalc.compute_features(packets_list=pkts) # 计算特征
+    print('Test End.')
