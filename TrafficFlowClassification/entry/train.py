@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 15:04:21
 @Description: 训练模型的整个流程
-@LastEditTime: 2021-02-03 16:26:25
+@LastEditTime: 2021-02-03 16:27:22
 '''
 import os
 
@@ -75,4 +75,4 @@ def train_pipeline():
         }, is_best, cfg.train.model_name + '.pth')
     
 if __name__ == "__main__":
-    train_pipeline()
+    train_pipeline() # 用于测试
