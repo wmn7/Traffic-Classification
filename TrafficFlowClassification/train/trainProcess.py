@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 17:03:15
 @Description: 模型训练的流程, 这里是一个 epoch 的训练流程
-@LastEditTime: 2021-02-02 19:44:46
+@LastEditTime: 2021-02-05 23:44:00
 '''
 
 from TrafficFlowClassification.utils.helper import AverageMeter, accuracy
@@ -26,18 +26,18 @@ def train_process(train_loader, model, criterion, optimizer, epoch, device, prin
 
     model.train()  # 切换为训练模型
 
-    for i, (input, target) in enumerate(train_loader):
+    for i, (pcap, _, target) in enumerate(train_loader):
 
+        pcap = pcap.to(device)
         target = target.to(device)
-        input = input.to(device)
 
-        output = model(input)  # 得到模型预测结果
+        output = model(pcap)  # 得到模型预测结果
         loss = criterion(output, target)  # 计算 loss
 
         # 计算准确率, 记录 loss 和 accuracy
         prec1 = accuracy(output.data, target)
-        losses.update(loss.item(), input.size(0))
-        top1.update(prec1[0].item(), input.size(0))
+        losses.update(loss.item(), pcap.size(0))
+        top1.update(prec1[0].item(), pcap.size(0))
 
         # 反向传播
         optimizer.zero_grad()
