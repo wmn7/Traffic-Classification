@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2020-12-14 18:50:39
 @Description: 计算 pcap 文件的 26 个统计信息
-@LastEditTime: 2021-02-04 17:15:48
+@LastEditTime: 2021-02-05 12:56:54
 '''
 
 import os, statistics
@@ -105,7 +105,7 @@ class FeaturesCalc():
 
         #Calcola la durata del flusso di pacchetti.
         def compute_duration_flow(packets_list):
-            duration_time = packets_list[len(packets_list) - 1].time - packets_list[0].time
+            duration_time = packets_list[len(packets_list) - 1].time - packets_list[0].time # 最后一个包的时间 - 第一个包的时间
             return float(duration_time)
 
         # Calcola la grandezza in byte di ogni pacchetto in una lista di pacchetti
