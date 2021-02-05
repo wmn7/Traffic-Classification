@@ -2,8 +2,17 @@
  * @Author: WANG Maonan
  * @Date: 2021-02-02 12:56:46
  * @Description: 实验结果的记录
- * @LastEditTime: 2021-02-03 17:00:15
+ * @LastEditTime: 2021-02-05 23:30:40
 -->
+## 实验介绍
+
+- 只使用 26 个特征数据
+- 只使用 trimed flow
+- - 使用 CNN1D
+- - 使用 CNN2D
+- 同时使用统计特征和flow
+- - 使用 CNN1D
+- - 使用 CNN2D
 
 ## 784 session all
 

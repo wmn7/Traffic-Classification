@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 17:03:31
 @Description: 模型检测的流程, 这里会使用
-@LastEditTime: 2021-02-03 14:40:15
+@LastEditTime: 2021-02-05 23:47:44
 '''
 import torch
 
@@ -15,19 +15,20 @@ def validate_process(val_loader, model, criterion, device, print_freq):
     
     model.eval()  # switch to evaluate mode
 
-    for i, (input, target) in enumerate(val_loader):
+    for i, (pcap, _, target) in enumerate(val_loader):
+        
+        pcap = pcap.to(device)
         target = target.to(device)
-        input = input.to(device)
 
         with torch.no_grad():
 
-            output = model(input)  # compute output
+            output = model(pcap)  # compute output
             loss = criterion(output, target)  # 计算验证集的 loss
 
             # measure accuracy and record loss
             prec1 = accuracy(output.data, target)
-            losses.update(loss.item(), input.size(0))
-            top1.update(prec1[0].item(), input.size(0))
+            losses.update(loss.item(), pcap.size(0))
+            top1.update(prec1[0].item(), pcap.size(0))
 
             if (i+1) % print_freq == 0:
                 logger.info('Test: [{0}/{1}], Loss {loss.val:.4f} ({loss.avg:.4f}), Prec@1 {top1.val:.3f} ({top1.avg:.3f})'.format(

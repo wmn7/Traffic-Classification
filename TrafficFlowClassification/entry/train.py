@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 15:04:21
 @Description: 训练模型的整个流程
-@LastEditTime: 2021-02-03 16:27:22
+@LastEditTime: 2021-02-05 23:45:18
 '''
 import os
 
@@ -34,8 +34,8 @@ def train_pipeline():
     optimizer = optim.Adam(model.parameters(), lr=cfg.train.lr) # 定义优化器
     logger.info('成功初始化模型.')
 
-    train_loader = data_loader(pcap_file=cfg.train.train_pcap, label_file=cfg.train.train_label, trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 获得 train dataloader
-    test_loader = data_loader(pcap_file=cfg.train.test_pcap, label_file=cfg.train.test_label, trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 获得 train dataloader
+    train_loader = data_loader(pcap_file=cfg.train.train_pcap, label_file=cfg.train.train_label, statistic_file=cfg.train.train_statistic, trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 获得 train dataloader
+    test_loader = data_loader(pcap_file=cfg.train.test_pcap, label_file=cfg.train.test_label, statistic_file=cfg.train.test_statistic, trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 获得 train dataloader
     logger.info('成功加载数据集.')
 
     if cfg.test.evaluate: # 是否只进行测试
