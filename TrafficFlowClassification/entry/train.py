@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 15:04:21
 @Description: 训练模型的整个流程
-@LastEditTime: 2021-02-05 23:45:18
+@LastEditTime: 2021-02-06 17:57:14
 '''
 import os
 
@@ -29,7 +29,7 @@ def train_pipeline():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name) # 模型的路径
-    model = cnn2d(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
+    model = cnn1d(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
     criterion = nn.CrossEntropyLoss() # 定义损失函数
     optimizer = optim.Adam(model.parameters(), lr=cfg.train.lr) # 定义优化器
     logger.info('成功初始化模型.')
@@ -45,11 +45,11 @@ def train_pipeline():
         # 计算每个类别详细的准确率
         index2label = {j:i for i,j in cfg.test.label2index.items()} # index->label 对应关系
         label_list = [index2label.get(i) for i in range(12)] # 12 个 label 的标签
-        X_data, Y_data = get_tensor_data(pcap_file=cfg.train.test_pcap, label_file=cfg.train.test_label, trimed_file_len=cfg.train.TRIMED_FILE_LEN)
-        y_pred = model(X_data.to(device)) # 放入模型进行预测
+        pcap_data, statistic_data, label_data = get_tensor_data(pcap_file=cfg.train.test_pcap, statistic_file=cfg.train.test_statistic, label_file=cfg.train.test_label, trimed_file_len=cfg.train.TRIMED_FILE_LEN)
+        y_pred = model(pcap_data.to(device), statistic_data.to(device)) # 放入模型进行预测
         _, pred = y_pred.topk(1, 1, largest=True, sorted=True)
         
-        Y_data_label = [index2label.get(i.tolist()) for i in Y_data] # 转换为具体名称
+        Y_data_label = [index2label.get(i.tolist()) for i in label_data] # 转换为具体名称
         pred_label = [index2label.get(i.tolist()) for i in pred.view(-1).cpu().detach()]
         
         display_model_performance_metrics(true_labels=Y_data_label, predicted_labels=pred_label, classes=label_list)
@@ -72,7 +72,7 @@ def train_pipeline():
             'state_dict': model.state_dict(),
             'best_prec1': best_prec1,
             'optimizer': optimizer.state_dict()
-        }, is_best, cfg.train.model_name + '.pth')
+        }, is_best, cfg.train.model_name)
     
 if __name__ == "__main__":
     train_pipeline() # 用于测试
