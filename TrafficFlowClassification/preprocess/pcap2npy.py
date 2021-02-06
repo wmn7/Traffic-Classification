@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-05 16:07:22
 @Description: 将 pcap 文件保存为 npy, 用作最后的训练
-@LastEditTime: 2021-02-05 21:44:40
+@LastEditTime: 2021-02-06 19:37:49
 '''
 import os
 import json
@@ -57,7 +57,7 @@ def save_pcap2npy(pcap_dict, file_name, statistic_feature_json, label2index = {}
     np.random.shuffle(data) # 对数据进行打乱
     
     pcap_data = np.array([i[0] for i in data]) # raw pcap 减裁
-    statistic_data = np.array([i[2] for i in data]) # statistic data
+    statistic_data = np.array([i[1] for i in data]) # statistic data
     y = np.array([i[2] for i in data]) # label
 
     logger.info('数据的大小, {}; 统计特征的大小, {}; 标签的大小, {};'.format(pcap_data.shape, statistic_data.shape, y.shape)) # 打印数据大小

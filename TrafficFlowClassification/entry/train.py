@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 15:04:21
 @Description: 训练模型的整个流程
-@LastEditTime: 2021-02-06 17:57:14
+@LastEditTime: 2021-02-06 22:40:20
 '''
 import os
 
@@ -12,8 +12,11 @@ from torch import nn, optim
 from TrafficFlowClassification.TrafficLog.setLog import logger
 from TrafficFlowClassification.utils.setConfig import setup_config
 
+# 下面是一些可以使用的模型
 from TrafficFlowClassification.models.cnn1d import cnn1d
 from TrafficFlowClassification.models.cnn2d import cnn2d
+from TrafficFlowClassification.models.dnn import deepnn
+
 from TrafficFlowClassification.train.trainProcess import train_process
 from TrafficFlowClassification.train.validateProcess import validate_process
 from TrafficFlowClassification.data.dataLoader import data_loader
@@ -29,7 +32,7 @@ def train_pipeline():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name) # 模型的路径
-    model = cnn1d(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
+    model = cnn2d(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
     criterion = nn.CrossEntropyLoss() # 定义损失函数
     optimizer = optim.Adam(model.parameters(), lr=cfg.train.lr) # 定义优化器
     logger.info('成功初始化模型.')
