@@ -2,9 +2,8 @@
 @Author: WANG Maonan
 @Date: 2021-02-02 18:02:52
 @Description: 二维卷积模型, 用来进行流量分类
-@LastEditTime: 2021-02-06 17:03:33
+@LastEditTime: 2021-02-06 19:26:09
 '''
-import os
 import torch
 import torch.nn as nn
 

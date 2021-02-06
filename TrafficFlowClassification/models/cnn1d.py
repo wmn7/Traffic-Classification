@@ -4,7 +4,6 @@
 @Description: 1 维卷积模型, 基础模型
 @LastEditTime: 2021-02-06 17:00:55
 '''
-import os
 import torch
 import torch.nn as nn
 
