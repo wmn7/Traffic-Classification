@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-02-02 18:02:52
 @Description: 二维卷积模型, 用来进行流量分类
-@LastEditTime: 2021-02-03 16:11:50
+@LastEditTime: 2021-02-06 17:03:33
 '''
 import os
 import torch
@@ -31,7 +31,13 @@ class Cnn2d(nn.Module):
             nn.Linear(in_features=1024, out_features=num_classes)
         )
         
-    def forward(self, x):
+    def forward(self, x, statistic):
+        """模型前向传播的函数
+
+        Args:
+            x: 裁剪过后的 pcap 数据
+            statistic: pcap 的统计信息 (26 个统计特征)
+        """
         x = x.view(x.size(0), 1, self.image_width, self.image_width) # 这里需要转换为 (batch, channel, width, height)
         x = self.features(x) # 卷积层, 提取特征
         x = x.view(x.size(0), -1) # 展开

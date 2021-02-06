@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 10:57:54
 @Description: 1 维卷积模型, 基础模型
-@LastEditTime: 2021-02-03 16:10:28
+@LastEditTime: 2021-02-06 17:00:55
 '''
 import os
 import torch
@@ -29,7 +29,7 @@ class Cnn1d(nn.Module):
             nn.Dropout(0.7),
             nn.Linear(in_features=1024, out_features=num_classes)
         )
-    def forward(self, x):
+    def forward(self, x, statistic):
         x = x.view(x.size(0),1,-1) # 将图片摊平
         x = self.features(x) # 卷积层, 提取特征
         x = x.view(x.size(0), -1) # 展开
@@ -40,7 +40,7 @@ def cnn1d(model_path, pretrained=False, **kwargs):
     """
     CNN 1D model architecture 
 
-    Args:
+    Args: 
         pretrained (bool): if True, returns a model pre-trained model
     """
     model = Cnn1d(**kwargs)
