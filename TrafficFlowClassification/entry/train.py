@@ -31,6 +31,7 @@ def train_pipeline():
     logger.info(cfg)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    logger.info('是否使用 GPU 进行训练, {}'.format(device))
     
     model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name) # 模型的路径
     model = resnet182D(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
@@ -77,6 +78,8 @@ def train_pipeline():
             'best_prec1': best_prec1,
             'optimizer': optimizer.state_dict()
         }, is_best, cfg.train.model_name)
+    
+    logger.info('Finished! (*￣︶￣)')
     
 if __name__ == "__main__":
     train_pipeline() # 用于测试
