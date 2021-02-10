@@ -15,7 +15,8 @@ from TrafficFlowClassification.utils.setConfig import setup_config
 # 下面是一些可以使用的模型
 from TrafficFlowClassification.models.cnn1d import cnn1d
 from TrafficFlowClassification.models.cnn2d import cnn2d
-from TrafficFlowClassification.models.dnn import deepnn
+from TrafficFlowClassification.models.dnn import deepnn # 对统计特征进行分类
+from TrafficFlowClassification.models.resnet18_2d import resnet182D
 
 from TrafficFlowClassification.train.trainProcess import train_process
 from TrafficFlowClassification.train.validateProcess import validate_process
@@ -32,7 +33,7 @@ def train_pipeline():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name) # 模型的路径
-    model = cnn1d(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
+    model = resnet182D(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
     criterion = nn.CrossEntropyLoss() # 定义损失函数
     optimizer = optim.Adam(model.parameters(), lr=cfg.train.lr) # 定义优化器
     logger.info('成功初始化模型.')

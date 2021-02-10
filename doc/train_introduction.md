@@ -158,4 +158,7 @@ Actual: Chat                 119     8     5   0         1     4        0       
         VPN_VoIP               3     0     1   0         0     0        0         0      0       0             1       66
 ```
 
-### ResNet 18
+### ResNet 18 2D
+
+
+### ResNet 18 1D
