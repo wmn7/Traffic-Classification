@@ -25,6 +25,7 @@ def set_logger():
     - 第一个 log 文件会记录所有的内容, 方便调试的时候使用 (只输出到文件);
     - 第二个 log 文件只会记录 INFO 或以上的信息, 方便查看程序运行是否正常 (同时输出到控制台和文件);
     """
+    os.makedirs(os.path.join(filePath, 'log'), exist_ok=True) # 新建文件夹
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter(
