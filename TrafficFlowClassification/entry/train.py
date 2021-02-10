@@ -77,7 +77,7 @@ def train_pipeline():
             'state_dict': model.state_dict(),
             'best_prec1': best_prec1,
             'optimizer': optimizer.state_dict()
-        }, is_best, cfg.train.model_name)
+        }, is_best, model_path)
     
     logger.info('Finished! (*￣︶￣)')
     
