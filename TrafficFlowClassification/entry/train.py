@@ -32,7 +32,7 @@ def train_pipeline():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name) # 模型的路径
-    model = cnn2d(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
+    model = cnn1d(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
     criterion = nn.CrossEntropyLoss() # 定义损失函数
     optimizer = optim.Adam(model.parameters(), lr=cfg.train.lr) # 定义优化器
     logger.info('成功初始化模型.')

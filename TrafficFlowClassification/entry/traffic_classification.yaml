@@ -15,12 +15,12 @@ train:
   test_label: ./data/npy_data/784_session_all/test-labels.npy # 测试集 label 的地址
   TRIMED_FILE_LEN: 784 # 最后减裁文件的大小
   train_size: 0.9 # 训练集所占比例
-  epochs: 200 # 训练的轮数
+  epochs: 3 # 训练的轮数
   lr: 0.001 # learning rate
   model_dir: './checkpoint' # 模型保存的文件夹
-  model_name: 784_session_all_cnn2d.pth # 模型的名称
+  model_name: 784_session_all_cnn1d.pth # 模型的名称
 
 test:
-  evaluate: True # 如果是 True, 则不进行训练, 只进行评测
-  pretrained: True # 是否有训练好的模型
+  evaluate: False # 如果是 True, 则不进行训练, 只进行评测
+  pretrained: False # 是否有训练好的模型
   label2index: {'Chat': 0, 'Email': 1, 'FT': 2, 'P2P': 3, 'Streaming': 4, 'VoIP': 5, 'VPN_Chat': 6, 'VPN_Email': 7, 'VPN_FT': 8, 'VPN_P2P': 9, 'VPN_Streaming': 10, 'VPN_VoIP': 11}
