@@ -160,5 +160,56 @@ Actual: Chat                 119     8     5   0         1     4        0       
 
 ### ResNet 18 2D
 
+```
+Model Performance metrics:
+------------------------------
+Accuracy: 0.976
+Precision: 0.976
+Recall: 0.976
+F1 Score: 0.976
+
+Model Classification report:
+------------------------------
+               precision    recall  f1-score   support
+
+         Chat       0.89      0.90      0.89       137
+        Email       0.91      0.91      0.91        64
+           FT       0.98      0.98      0.98      1236
+          P2P       1.00      0.95      0.97        39
+    Streaming       0.81      0.81      0.81       178
+         VoIP       0.99      0.99      0.99      3720
+     VPN_Chat       1.00      1.00      1.00        29
+    VPN_Email       1.00      1.00      1.00        15
+       VPN_FT       0.98      1.00      0.99        46
+      VPN_P2P       1.00      1.00      1.00        26
+VPN_Streaming       0.98      0.96      0.97        57
+     VPN_VoIP       0.97      0.96      0.96        71
+
+    micro avg       0.98      0.98      0.98      5618
+    macro avg       0.96      0.95      0.96      5618
+ weighted avg       0.98      0.98      0.98      5618
+
+
+Prediction Confusion Matrix:
+------------------------------
+                      Predicted:
+                            Chat Email    FT P2P Streaming  VoIP VPN_Chat VPN_Email VPN_FT VPN_P2P VPN_Streaming VPN_VoIP
+Actual: Chat                 123     6     1   0         1     4        0         0      0       0             0        2
+        Email                  6    58     0   0         0     0        0         0      0       0             0        0
+        FT                     2     0  1206   0         7    20        0         0      0       0             1        0
+        P2P                    0     0     2  37         0     0        0         0      0       0             0        0
+        Streaming              2     0     6   0       145    25        0         0      0       0             0        0
+        VoIP                   2     0    18   0        25  3675        0         0      0       0             0        0
+        VPN_Chat               0     0     0   0         0     0       29         0      0       0             0        0
+        VPN_Email              0     0     0   0         0     0        0        15      0       0             0        0
+        VPN_FT                 0     0     0   0         0     0        0         0     46       0             0        0
+        VPN_P2P                0     0     0   0         0     0        0         0      0      26             0        0
+        VPN_Streaming          0     0     0   0         1     0        0         0      1       0            55        0
+        VPN_VoIP               3     0     0   0         0     0        0         0      0       0             0       68
+```
 
 ### ResNet 18 1D
+
+```
+
+```
