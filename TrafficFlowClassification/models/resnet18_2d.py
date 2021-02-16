@@ -1,7 +1,7 @@
 '''
 @Author: WANG Maonan
 @Date: 2021-02-10 11:01:50
-@Description: ResNet 的实现
+@Description: ResNet 的实现, 这里使用 2D 卷积
 @LastEditTime: 2021-02-10 11:21:50
 '''
 import math

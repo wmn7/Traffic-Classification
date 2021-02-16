@@ -18,7 +18,7 @@ train:
   epochs: 3 # 训练的轮数
   lr: 0.001 # learning rate
   model_dir: './checkpoint' # 模型保存的文件夹
-  model_name: 784_session_all_cnn1d.pth # 模型的名称
+  model_name: 784_session_all_resnet1d.pth # 模型的名称
 
 test:
   evaluate: False # 如果是 True, 则不进行训练, 只进行评测

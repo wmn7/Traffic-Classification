@@ -50,7 +50,10 @@ def train_predict_model(classifier,
 
 
 def display_confusion_matrix(true_labels, predicted_labels, classes=[1, 0]):
-
+    # 下面是可以使得整个 dataframe 可以完整显示出来
+    pd.set_option('display.max_columns', None) 
+    pd.set_option('display.max_colwidth', None)
+    pd.set_option('display.width', 2000)
     total_classes = len(classes)
     level_labels = [total_classes*[0], list(range(total_classes))]
 
