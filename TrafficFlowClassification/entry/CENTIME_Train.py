@@ -1,7 +1,7 @@
 '''
 @Author: WANG Maonan
 @Date: 2021-01-07 15:04:21
-@Description: 训练模型的整个流程, 单个模型的训练
+@Description: 这个是训练 mixed model 的时候使用的
 @LastEditTime: 2021-02-06 22:40:20
 '''
 import os
@@ -13,11 +13,7 @@ from TrafficFlowClassification.TrafficLog.setLog import logger
 from TrafficFlowClassification.utils.setConfig import setup_config
 
 # 下面是一些可以使用的模型
-from TrafficFlowClassification.models.cnn1d import cnn1d
-from TrafficFlowClassification.models.cnn2d import cnn2d
-from TrafficFlowClassification.models.dnn import deepnn # 对统计特征进行分类
-from TrafficFlowClassification.models.resnet18_2d import resnet182D
-from TrafficFlowClassification.models.resnet18_1d import resnet181D
+from TrafficFlowClassification.models.resnet1d_ae import resnet_AE
 
 from TrafficFlowClassification.train.trainProcess import train_process
 from TrafficFlowClassification.train.validateProcess import validate_process
@@ -27,7 +23,7 @@ from TrafficFlowClassification.utils.helper import adjust_learning_rate, save_ch
 
 from TrafficFlowClassification.utils.evaluate_tools import display_model_performance_metrics
 
-def train_pipeline():
+def CENTIME_train_pipeline():
     cfg = setup_config() # 获取 config 文件
     logger.info(cfg)
 
@@ -35,8 +31,10 @@ def train_pipeline():
     logger.info('是否使用 GPU 进行训练, {}'.format(device))
     
     model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name) # 模型的路径
-    model = resnet181D(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
-    criterion = nn.CrossEntropyLoss() # 定义损失函数
+    model = resnet_AE(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device)
+
+    criterion_c = nn.CrossEntropyLoss() # 分类用的损失函数
+    criterion_r = nn.L1Loss() # 重构误差的损失函数
     optimizer = optim.Adam(model.parameters(), lr=cfg.train.lr) # 定义优化器
     logger.info('成功初始化模型.')
 
@@ -83,4 +81,4 @@ def train_pipeline():
     logger.info('Finished! (*￣︶￣)')
     
 if __name__ == "__main__":
-    train_pipeline() # 用于测试
+    CENTIME_train_pipeline() # 用于测试
