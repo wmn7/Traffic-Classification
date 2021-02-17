@@ -1,7 +1,7 @@
 <!--
  * @Author: WANG Maonan
  * @Date: 2021-02-02 12:56:46
- * @Description: 实验结果的记录
+ * @Description: 一些 baseline 的结果
  * @LastEditTime: 2021-02-06 23:06:23
 -->
 ## 实验介绍
@@ -255,9 +255,4 @@ Actual: Chat                 134     1     0   0         0     2        0       
         VPN_P2P                0     0     0   0         0     0        0         0      0      26             0        0
         VPN_Streaming          0     0     0   0         0     1        0         0      0       0            56        0
         VPN_VoIP               2     0     0   0         0     0        0         0      0       0             0       69
-```
-
-### ResNet18 1D + Statistic Feature
-
-```
 ```
