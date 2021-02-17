@@ -169,9 +169,9 @@ def resnet_AE(model_path, pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    resNet_model = ResNet(BasicBlock, [2, 2, 2, 2], **kwargs)
+    resNet_model = ResNet(BasicBlock, [2, 2, 2, 2])
     ae_model = AutoEncoder_statistic()
-    resnetAE_model = ResNetAE(resnet=resNet_model, autoencoder=ae_model)
+    resnetAE_model = ResNetAE(resnet=resNet_model, autoencoder=ae_model, **kwargs)
 
     if pretrained:
         checkpoint = torch.load(model_path)
