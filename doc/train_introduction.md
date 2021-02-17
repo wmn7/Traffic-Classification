@@ -6,53 +6,54 @@
 -->
 ## 实验介绍
 
-- 只使用 26 个特征数据
-- 只使用 trimed flow
-- - 使用 CNN1D
-- - 使用 CNN2D
-- 同时使用统计特征和flow
-- - 使用 CNN1D
-- - 使用 CNN2D
-
 ## Statistic Feature
 
 ```
-              precision    recall  f1-score   support
+Model Performance metrics:
+------------------------------
+Accuracy: 0.7124
+Precision: 0.6636
+Recall: 0.7124
+F1 Score: 0.6398
 
-         Chat       0.29      0.01      0.03       137
+Model Classification report:
+------------------------------
+               precision    recall  f1-score   support
+
+         Chat       0.69      0.34      0.45       137
         Email       0.00      0.00      0.00        64
-           FT       1.00      0.00      0.01      1236
-          P2P       0.00      0.00      0.00        39
-    Streaming       0.21      0.08      0.12       178
-         VoIP       0.68      1.00      0.81      3720
+           FT       0.56      0.11      0.19      1236
+          P2P       0.47      0.23      0.31        39
+    Streaming       0.50      0.44      0.47       178
+         VoIP       0.73      0.99      0.84      3720
      VPN_Chat       0.00      0.00      0.00        29
     VPN_Email       0.00      0.00      0.00        15
-       VPN_FT       0.25      0.28      0.27        46
-      VPN_P2P       0.67      0.08      0.14        26
-VPN_Streaming       0.69      0.16      0.26        57
-     VPN_VoIP       0.38      0.07      0.12        71
+       VPN_FT       0.50      0.22      0.30        46
+      VPN_P2P       0.56      0.69      0.62        26
+VPN_Streaming       0.57      0.21      0.31        57
+     VPN_VoIP       0.46      0.34      0.39        71
 
-     accuracy                           0.67      5618
-    macro avg       0.35      0.14      0.15      5618
- weighted avg       0.70      0.67      0.55      5618
+    micro avg       0.71      0.71      0.71      5618
+    macro avg       0.42      0.30      0.32      5618
+ weighted avg       0.66      0.71      0.64      5618
 
 
 Prediction Confusion Matrix:
 ------------------------------
                       Predicted:
-                            Chat Email FT P2P Streaming  VoIP VPN_Chat VPN_Email VPN_FT VPN_P2P VPN_Streaming VPN_VoIP
-Actual: Chat                   2     0  0   0         6   127        0         0      0       0             2        0
-        Email                  0     0  0   0         0    64        0         0      0       0             0        0
-        FT                     1     0  6   0        16  1213        0         0      0       0             0        0
-        P2P                    0     0  0   0        15    24        0         0      0       0             0        0
-        Streaming              0     0  0   0        15   163        0         0      0       0             0        0
-        VoIP                   4     0  0   0         4  3712        0         0      0       0             0        0
-        VPN_Chat               0     0  0   0         0    17        0         0      8       0             0        4
-        VPN_Email              0     0  0   0         0     0        0         0     15       0             0        0
-        VPN_FT                 0     0  0   0         1    28        0         0     13       1             2        1
-        VPN_P2P                0     0  0   0        10     6        0         0      8       2             0        0
-        VPN_Streaming          0     0  0   0         5    34        0         0      6       0             9        3
-        VPN_VoIP               0     0  0   0         1    64        0         0      1       0             0        5
+                            Chat Email   FT P2P Streaming  VoIP VPN_Chat VPN_Email VPN_FT VPN_P2P VPN_Streaming VPN_VoIP
+Actual: Chat                  46     2   16   0        11    60        0         0      0       0             2        0
+        Email                  6     0    1   0         0    56        0         0      1       0             0        0
+        FT                     5     1  139   1        26  1062        0         0      1       0             1        0
+        P2P                    0     0    8   9         7    15        0         0      0       0             0        0
+        Streaming              2     1   29   8        79    57        0         0      0       0             2        0
+        VoIP                   5     3   29   1        15  3665        0         0      0       0             2        0
+        VPN_Chat               2     0    4   0         0     7        0         0      5       1             1        9
+        VPN_Email              0     0    0   0         0     0        0         0      0       0             0       15
+        VPN_FT                 1     1    1   0         3    19        0         0     10       9             1        1
+        VPN_P2P                0     0    5   0         1     1        0         0      1      18             0        0
+        VPN_Streaming          0     0    9   0        16    13        0         0      1       3            12        3
+        VPN_VoIP               0     0    7   0         1    36        0         1      1       1             0       24
 ```
 
 
@@ -211,5 +212,52 @@ Actual: Chat                 123     6     1   0         1     4        0       
 ### ResNet 18 1D
 
 ```
+Accuracy: 0.9913
+Precision: 0.9914
+Recall: 0.9913
+F1 Score: 0.9913
 
+Model Classification report:
+------------------------------
+               precision    recall  f1-score   support
+
+         Chat       0.97      0.98      0.97       137
+        Email       0.98      0.97      0.98        64
+           FT       1.00      0.99      1.00      1236
+          P2P       0.95      1.00      0.97        39
+    Streaming       0.90      0.93      0.91       178
+         VoIP       1.00      0.99      0.99      3720
+     VPN_Chat       1.00      1.00      1.00        29
+    VPN_Email       1.00      1.00      1.00        15
+       VPN_FT       1.00      1.00      1.00        46
+      VPN_P2P       1.00      1.00      1.00        26
+VPN_Streaming       0.97      0.98      0.97        57
+     VPN_VoIP       1.00      0.97      0.99        71
+
+    micro avg       0.99      0.99      0.99      5618
+    macro avg       0.98      0.99      0.98      5618
+ weighted avg       0.99      0.99      0.99      5618
+
+
+Prediction Confusion Matrix:
+------------------------------
+                      Predicted:
+                            Chat Email    FT P2P Streaming  VoIP VPN_Chat VPN_Email VPN_FT VPN_P2P VPN_Streaming VPN_VoIP
+Actual: Chat                 134     1     0   0         0     2        0         0      0       0             0        0
+        Email                  2    62     0   0         0     0        0         0      0       0             0        0
+        FT                     0     0  1229   0         0     5        0         0      0       0             2        0
+        P2P                    0     0     0  39         0     0        0         0      0       0             0        0
+        Streaming              0     0     0   2       166    10        0         0      0       0             0        0
+        VoIP                   0     0     3   0        19  3698        0         0      0       0             0        0
+        VPN_Chat               0     0     0   0         0     0       29         0      0       0             0        0
+        VPN_Email              0     0     0   0         0     0        0        15      0       0             0        0
+        VPN_FT                 0     0     0   0         0     0        0         0     46       0             0        0
+        VPN_P2P                0     0     0   0         0     0        0         0      0      26             0        0
+        VPN_Streaming          0     0     0   0         0     1        0         0      0       0            56        0
+        VPN_VoIP               2     0     0   0         0     0        0         0      0       0             0       69
+```
+
+### ResNet18 1D + Statistic Feature
+
+```
 ```
