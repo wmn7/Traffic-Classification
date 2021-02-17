@@ -7,4 +7,4 @@
 
 ## CENTIME Model
 
-### $\Alpha=0.1$
+### $\alpha=0.1$
