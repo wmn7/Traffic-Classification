@@ -8,6 +8,7 @@
 import fire
 from TrafficFlowClassification.entry.preprocess import preprocess_pipeline
 from TrafficFlowClassification.entry.train import train_pipeline
+from TrafficFlowClassification.entry.CENTIME_Train import CENTIME_train_pipeline
 
 def help():
     """使用的一些简单说明
@@ -15,8 +16,10 @@ def help():
     data = '''
     => 数据预处理的流程
     python -m TrafficFlowClassification preprocess_pipeline
-    => 数据训练的流程
+    => 数据训练的流程 (基础模型训练)
     python -m TrafficFlowClassification train_pipeline
+    => 混合模型训练流程
+    python -m TrafficFlowClassification CENTIME_train_pipeline
     '''
     return data
 
