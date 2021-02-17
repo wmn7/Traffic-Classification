@@ -174,10 +174,11 @@ def CENTIME_train_pipeline():
             pcap_file=cfg.train.test_pcap,
             statistic_file=cfg.train.test_statistic,
             label_file=cfg.train.test_label,
-            trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 将 numpy 转换为 tensor 
-        
-        statistic_data = (statistic_data - mean_val)/std_val # 对数据做一下归一化
-        y_pred, _ = model(pcap_data.to(device), statistic_data.to(device))  # 放入模型进行预测
+            trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 将 numpy 转换为 tensor
+
+        pcap_data = pcap_data.to(device)
+        statistic_data = (statistic_data.to(device) - mean_val)/std_val # 对数据做一下归一化
+        y_pred, _ = model(pcap_data, statistic_data)  # 放入模型进行预测
         _, pred = y_pred.topk(1, 1, largest=True, sorted=True)
 
         Y_data_label = [index2label.get(i.tolist())
