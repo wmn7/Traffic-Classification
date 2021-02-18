@@ -6,6 +6,7 @@
 '''
 import os
 import numpy as np
+import time
 import torch
 from torch import nn, optim
 
@@ -45,8 +46,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 mean_val = torch.from_numpy(mean_val).float().to(device)
 std_val = torch.from_numpy(std_val).float().to(device)
 
-def train_process(train_loader, model, alpha, criterion_c, criterion_r,
-                  optimizer, epoch, device, print_freq):
+def train_process(train_loader, model, alpha, criterion_c, criterion_r, optimizer, epoch, device, print_freq):
     """训练一个 epoch 的流程
 
     Args:
@@ -76,7 +76,7 @@ def train_process(train_loader, model, alpha, criterion_c, criterion_r,
         classific_result, fake_statistic = model(pcap, statistic)  # 分类结果和重构结果
         loss_c = criterion_c(classific_result, target)  # 计算 分类的 loss
         loss_r = criterion_r(statistic, fake_statistic)  # 计算 重构 loss
-        loss = loss_c + alpha * loss_r  # 将两个误差组合在一起
+        loss = alpha * loss_c + loss_r  # 将两个误差组合在一起
 
         # 计算准确率, 记录 loss 和 accuracy
         prec1 = accuracy(classific_result.data, target)
@@ -131,18 +131,15 @@ def validate_process(val_loader, model, device, print_freq):
     return top1.avg
 
 
-def CENTIME_train_pipeline():
+def CENTIME_train_pipeline(alpha):
     cfg = setup_config()  # 获取 config 文件
     logger.info(cfg)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info('是否使用 GPU 进行训练, {}'.format(device))
 
-    model_path = os.path.join(cfg.train.model_dir,
-                              cfg.train.model_name)  # 模型的路径
-    model = resnet_AE(model_path,
-                      pretrained=cfg.test.pretrained,
-                      num_classes=12).to(device)
+    model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name)  # 模型的路径
+    model = resnet_AE(model_path, pretrained=False, num_classes=12).to(device) # 初始化模型
 
     criterion_c = nn.CrossEntropyLoss()  # 分类用的损失函数
     criterion_r = nn.L1Loss()  # 重构误差的损失函数
@@ -163,38 +160,11 @@ def CENTIME_train_pipeline():
 
     logger.info('成功加载数据集.')
 
-    if cfg.test.evaluate:  # 是否只进行测试
-        logger.info('进入测试模式.')
-        validate_process(test_loader, model, device, 20)  # 总的一个准确率
-
-        # 计算每个类别详细的准确率
-        index2label = {j: i for i, j in cfg.test.label2index.items()}  # index->label 对应关系
-        label_list = [index2label.get(i) for i in range(12)]  # 12 个 label 的标签
-        pcap_data, statistic_data, label_data = get_tensor_data(
-            pcap_file=cfg.train.test_pcap,
-            statistic_file=cfg.train.test_statistic,
-            label_file=cfg.train.test_label,
-            trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 将 numpy 转换为 tensor
-
-        pcap_data = pcap_data.to(device)
-        statistic_data = (statistic_data.to(device) - mean_val)/std_val # 对数据做一下归一化
-        y_pred, _ = model(pcap_data, statistic_data)  # 放入模型进行预测
-        _, pred = y_pred.topk(1, 1, largest=True, sorted=True)
-
-        Y_data_label = [index2label.get(i.tolist())
-                        for i in label_data]  # 转换为具体名称
-        pred_label = [index2label.get(i.tolist()) for i in pred.view(-1).cpu().detach()]
-
-        display_model_performance_metrics(true_labels=Y_data_label,
-                                          predicted_labels=pred_label,
-                                          classes=label_list)
-        return
-
     best_prec1 = 0
     for epoch in range(cfg.train.epochs):
         adjust_learning_rate(optimizer, epoch, cfg.train.lr)  # 动态调整学习率
 
-        train_process(train_loader, model, 1, criterion_c, criterion_r, optimizer, epoch, device, 80)  # train for one epoch
+        train_process(train_loader, model, alpha, criterion_c, criterion_r, optimizer, epoch, device, 80)  # train for one epoch
         prec1 = validate_process(test_loader, model, device, 20)  # evaluate on validation set
 
         # remember the best prec@1 and save checkpoint
@@ -209,9 +179,39 @@ def CENTIME_train_pipeline():
                 'best_prec1': best_prec1,
                 'optimizer': optimizer.state_dict()
             }, is_best, model_path)
+    
+    # 下面进入测试模式, 计算每个类别详细的准确率
+    logger.info('进入测试模式.')
+    model = resnet_AE(model_path, pretrained=True, num_classes=12).to(device) # 加载最好的模型
+    index2label = {j: i for i, j in cfg.test.label2index.items()}  # index->label 对应关系
+    label_list = [index2label.get(i) for i in range(12)]  # 12 个 label 的标签
+    pcap_data, statistic_data, label_data = get_tensor_data(
+        pcap_file=cfg.train.test_pcap,
+        statistic_file=cfg.train.test_statistic,
+        label_file=cfg.train.test_label,
+        trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 将 numpy 转换为 tensor
+
+    pcap_data = (pcap_data/255).to(device) # 流量数据
+    statistic_data = (statistic_data.to(device) - mean_val)/std_val # 对数据做一下归一化
+    y_pred, _ = model(pcap_data, statistic_data)  # 放入模型进行预测
+    _, pred = y_pred.topk(1, 1, largest=True, sorted=True)
+
+    Y_data_label = [index2label.get(i.tolist()) for i in label_data]  # 转换为具体名称
+    pred_label = [index2label.get(i.tolist()) for i in pred.view(-1).cpu().detach()]
+
+    logger.info('Alpha:{}'.format(alpha))
+    display_model_performance_metrics(true_labels=Y_data_label,
+                                        predicted_labels=pred_label,
+                                        classes=label_list)
 
     logger.info('Finished! (*￣︶￣)')
 
+
+def alpha_experiment_CENTIME():
+    alpha_list = [0, 0.001, 0.01, 0.1, 0.5, 1, 5, 10, 100]
+    for alpha in alpha_list:
+        CENTIME_train_pipeline(alpha)
+        time.sleep(10)
 
 if __name__ == "__main__":
     CENTIME_train_pipeline()  # 用于测试
