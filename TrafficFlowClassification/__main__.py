@@ -8,7 +8,7 @@
 import fire
 from TrafficFlowClassification.entry.preprocess import preprocess_pipeline
 from TrafficFlowClassification.entry.train import train_pipeline
-from TrafficFlowClassification.entry.CENTIME_Train import CENTIME_train_pipeline
+from TrafficFlowClassification.entry.CENTIME_Train import CENTIME_train_pipeline, alpha_experiment_CENTIME
 
 def help():
     """使用的一些简单说明

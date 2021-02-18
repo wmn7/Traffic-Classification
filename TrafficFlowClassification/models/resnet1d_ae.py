@@ -169,12 +169,14 @@ def resnet_AE(model_path, pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     resNet_model = ResNet(BasicBlock, [2, 2, 2, 2])
     ae_model = AutoEncoder_statistic()
     resnetAE_model = ResNetAE(resnet=resNet_model, autoencoder=ae_model, **kwargs)
 
     if pretrained:
-        checkpoint = torch.load(model_path)
+        checkpoint = torch.load(model_path, map_location=device) # 模型加载的时候需要注明是使用 GPU 还是 CPU
         resnetAE_model.load_state_dict(checkpoint['state_dict'])
     return resnetAE_model
 
