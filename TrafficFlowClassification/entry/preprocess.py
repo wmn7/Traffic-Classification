@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2020-12-15 16:53:21
 @Description: 对原始流量文件进行预处理
-@LastEditTime: 2021-02-06 19:38:19
+@LastEditTime: 2021-03-07 22:25:19
 '''
 import os
 import shutil
@@ -55,13 +55,13 @@ def preprocess_pipeline():
     cfg = setup_config() # 获取 config 文件
     logger.info(cfg)
 
-    # transfer_pcap(cfg.pcap_path.raw_pcap_path, cfg.pcap_path.new_pcap_path) # 转移文件
-    # pcapng_to_pcap(cfg.pcap_path.new_pcap_path) # 将 pcapng 转换为 pcap
-    # pcap_transfer(cfg.pcap_path.new_pcap_path, cfg.pcap_path.new_pcap_path) # 将文件放在指定文件夹中, 这里新的文件夹查看 yaml 配置文件
-    # pcap_to_session(cfg.pcap_path.new_pcap_path, cfg.tool_path.splitcap_path) # 将 pcap 转换为 session
-    # statisticFeature2JSON(cfg.pcap_path.new_pcap_path) # 计算 pcap 的统计特征 (特征可以只计算一次, 后面就不需要再运行了)
-    # anonymize(cfg.pcap_path.new_pcap_path) # 对指定文件夹内的所有 pcap 进行匿名化处理
-    # pcap_trim(cfg.pcap_path.new_pcap_path, cfg.train.TRIMED_FILE_LEN) # 将所有的 pcap 转换为一样的大小, 同时统计原始 session 的长度
+    transfer_pcap(cfg.pcap_path.raw_pcap_path, cfg.pcap_path.new_pcap_path) # 转移文件
+    pcapng_to_pcap(cfg.pcap_path.new_pcap_path) # 将 pcapng 转换为 pcap
+    pcap_transfer(cfg.pcap_path.new_pcap_path, cfg.pcap_path.new_pcap_path) # 将文件放在指定文件夹中, 这里新的文件夹查看 yaml 配置文件
+    pcap_to_session(cfg.pcap_path.new_pcap_path, cfg.tool_path.splitcap_path) # 将 pcap 转换为 session
+    statisticFeature2JSON(cfg.pcap_path.new_pcap_path) # 计算 pcap 的统计特征 (特征可以只计算一次, 后面就不需要再运行了)
+    anonymize(cfg.pcap_path.new_pcap_path) # 对指定文件夹内的所有 pcap 进行匿名化处理
+    pcap_trim(cfg.pcap_path.new_pcap_path, cfg.train.TRIMED_FILE_LEN) # 将所有的 pcap 转换为一样的大小, 同时统计原始 session 的长度
     train_dict, test_dict = get_train_test(cfg.pcap_path.new_pcap_path, cfg.train.train_size) # 返回 train 和 test 的 dict
     label2index = save_pcap2npy(train_dict, 'train', cfg.pcap_path.statistic_feature) # 保存 train 的 npy 文件
     save_pcap2npy(test_dict, 'test', cfg.pcap_path.statistic_feature, label2index) # 保存 test 的 npy 文件
