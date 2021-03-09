@@ -13,7 +13,7 @@ train:
   test_pcap: ./data/npy_data/784_session_all/test-pcap.npy # 测试集 pcap 的地址
   test_statistic: ./data/npy_data/784_session_all/test-statistic.npy # 测试集 统计信息 的地址
   test_label: ./data/npy_data/784_session_all/test-labels.npy # 测试集 label 的地址
-  TRIMED_FILE_LEN: 1024 # 最后减裁文件的大小
+  TRIMED_FILE_LEN: 4096 # 最后减裁文件的大小
   train_size: 0.9 # 训练集所占比例
   epochs: 3 # 训练的轮数
   lr: 0.001 # learning rate
