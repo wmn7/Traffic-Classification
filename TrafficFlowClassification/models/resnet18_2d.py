@@ -2,11 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-02-10 11:01:50
 @Description: ResNet 的实现, 这里使用 2D 卷积
-<<<<<<< HEAD
-@LastEditTime: 2021-03-14 20:41:50
-=======
-@LastEditTime: 2021-02-10 11:21:50
->>>>>>> 20a38b040f76d66b2b288e4cd0fda51e2141a393
+@LastEditTime: 2021-03-25 12:03:41
 '''
 import math
 import torch
@@ -116,10 +112,7 @@ class ResNet(nn.Module):
         x = self.layer4(x) # (128,7,7)->(256,4,4)
         
         x = self.adaptiveAvgpool(x) # (256,4,4)->(256,1,1)
-<<<<<<< HEAD
         # print(x.shape)
-=======
->>>>>>> 20a38b040f76d66b2b288e4cd0fda51e2141a393
         x = x.view(x.size(0), -1) # (batch_size,256,1,1)->(batch_size,256)
         x = self.fc(x)
         

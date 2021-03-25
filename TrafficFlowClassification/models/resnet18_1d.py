@@ -2,11 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-02-10 22:36:10
 @Description: ResNet 的实现, 这里使用 1D 卷积
-<<<<<<< HEAD
-@LastEditTime: 2021-03-12 14:10:09
-=======
-@LastEditTime: 2021-02-10 22:36:10
->>>>>>> 20a38b040f76d66b2b288e4cd0fda51e2141a393
+@LastEditTime: 2021-03-25 12:03:33
 '''
 import math
 import torch
@@ -77,11 +73,7 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(block, 256, layers[3], stride=2)
 
         self.adaptiveAvgpool = nn.AdaptiveAvgPool1d(1)
-<<<<<<< HEAD
         self.fc = nn.Linear(256 * block.expansion, num_classes) # 784:256, 1024
-=======
-        self.fc = nn.Linear(256 * block.expansion, num_classes)
->>>>>>> 20a38b040f76d66b2b288e4cd0fda51e2141a393
 
         for m in self.modules(): # 对模型的参数进行初始化
             if isinstance(m, nn.Conv1d):
@@ -121,10 +113,7 @@ class ResNet(nn.Module):
         
         x = self.adaptiveAvgpool(x) # (batchsize, 256, 91)->(batchsize, 256, 1)
         x = x.view(x.size(0), -1) # (batchsize, 256, 1)->(batch_size, 256)
-<<<<<<< HEAD
         # print(x.shape)
-=======
->>>>>>> 20a38b040f76d66b2b288e4cd0fda51e2141a393
         x = self.fc(x)
         
         return x
