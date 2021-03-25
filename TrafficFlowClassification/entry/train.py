@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-01-07 15:04:21
 @Description: 训练模型的整个流程, 单个模型的训练
-@LastEditTime: 2021-02-06 22:40:20
+@LastEditTime: 2021-03-15 10:38:12
 '''
 import os
 
@@ -15,6 +15,8 @@ from TrafficFlowClassification.utils.setConfig import setup_config
 # 下面是一些可以使用的模型
 from TrafficFlowClassification.models.cnn1d import cnn1d
 from TrafficFlowClassification.models.cnn2d import cnn2d
+from TrafficFlowClassification.models.cnn1d_noPooling import cnn1d_noPooling
+from TrafficFlowClassification.models.cnn2d_noPooling import cnn2d_noPooling
 from TrafficFlowClassification.models.dnn import deepnn # 对统计特征进行分类
 from TrafficFlowClassification.models.resnet18_2d import resnet182D
 from TrafficFlowClassification.models.resnet18_1d import resnet181D
@@ -35,24 +37,34 @@ def train_pipeline():
     logger.info('是否使用 GPU 进行训练, {}'.format(device))
     
     model_path = os.path.join(cfg.train.model_dir, cfg.train.model_name) # 模型的路径
-    model = resnet181D(model_path, pretrained=cfg.test.pretrained, num_classes=12).to(device) # 定义模型
+    model = resnet181D(model_path, pretrained=cfg.test.pretrained, num_classes=12, image_width=cfg.train.IMAGE_WIDTH).to(device) # 定义模型
     criterion = nn.CrossEntropyLoss() # 定义损失函数
     optimizer = optim.Adam(model.parameters(), lr=cfg.train.lr) # 定义优化器
     logger.info('成功初始化模型.')
 
-    train_loader = data_loader(pcap_file=cfg.train.train_pcap, label_file=cfg.train.train_label, statistic_file=cfg.train.train_statistic, trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 获得 train dataloader
-    test_loader = data_loader(pcap_file=cfg.train.test_pcap, label_file=cfg.train.test_label, statistic_file=cfg.train.test_statistic, trimed_file_len=cfg.train.TRIMED_FILE_LEN) # 获得 train dataloader
+    train_loader = data_loader(pcap_file=cfg.train.train_pcap, label_file=cfg.train.train_label, statistic_file=cfg.train.train_statistic, trimed_file_len=cfg.train.TRIMED_FILE_LEN, batch_size=cfg.train.BATCH_SIZE) # 获得 train dataloader
+    test_loader = data_loader(pcap_file=cfg.train.test_pcap, label_file=cfg.train.test_label, statistic_file=cfg.train.test_statistic, trimed_file_len=cfg.train.TRIMED_FILE_LEN, batch_size=cfg.train.BATCH_SIZE) # 获得 train dataloader
     logger.info('成功加载数据集.')
 
     if cfg.test.evaluate: # 是否只进行测试
         logger.info('进入测试模式.')
         validate_process(test_loader, model, criterion, device, 20) # 总的一个准确率
-        
+        torch.cuda.empty_cache() # 清除显存
         # 计算每个类别详细的准确率
         index2label = {j:i for i,j in cfg.test.label2index.items()} # index->label 对应关系
         label_list = [index2label.get(i) for i in range(12)] # 12 个 label 的标签
         pcap_data, statistic_data, label_data = get_tensor_data(pcap_file=cfg.train.test_pcap, statistic_file=cfg.train.test_statistic, label_file=cfg.train.test_label, trimed_file_len=cfg.train.TRIMED_FILE_LEN)
-        y_pred = model(pcap_data.to(device), statistic_data.to(device)) # 放入模型进行预测
+        start_index = 0
+        y_pred = None
+        for i in list(range(100, 5800, 100)):
+            y_pred_batch = model(pcap_data[start_index:i].to(device), statistic_data[start_index:i].to(device)) # 放入模型进行预测
+            start_index = i
+            if y_pred == None:
+                y_pred = y_pred_batch.cpu().detach()
+            else:
+                y_pred = torch.cat((y_pred, y_pred_batch.cpu().detach()), dim=0)
+                print(y_pred.shape)
+                
         _, pred = y_pred.topk(1, 1, largest=True, sorted=True)
         
         Y_data_label = [index2label.get(i.tolist()) for i in label_data] # 转换为具体名称

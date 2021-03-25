@@ -2,7 +2,7 @@
 @Author: WANG Maonan
 @Date: 2021-02-02 18:02:52
 @Description: 二维卷积模型, 用来进行流量分类
-@LastEditTime: 2021-02-06 19:26:09
+@LastEditTime: 2021-03-14 11:32:52
 '''
 import torch
 import torch.nn as nn
@@ -25,7 +25,7 @@ class Cnn2d(nn.Module):
         )
         # 全连接层
         self.classifier = nn.Sequential(
-            nn.Linear(in_features=64*8*8, out_features=1024),
+            nn.Linear(in_features=64*17*17, out_features=1024), # 784:64*8*8, 1024:64*9*9, 4096: 64*17*17
             nn.Dropout(0.7),
             nn.Linear(in_features=1024, out_features=num_classes)
         )
@@ -39,6 +39,7 @@ class Cnn2d(nn.Module):
         """
         x = x.view(x.size(0), 1, self.image_width, self.image_width) # 这里需要转换为 (batch, channel, width, height)
         x = self.features(x) # 卷积层, 提取特征
+        # print(x.shape) # 用来配置全连接层的数
         x = x.view(x.size(0), -1) # 展开
         x = self.classifier(x) # 分类层, 用来分类
         return x

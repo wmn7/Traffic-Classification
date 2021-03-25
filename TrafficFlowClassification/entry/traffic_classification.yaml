@@ -7,18 +7,20 @@ tool_path:
   splitcap_path: ./tool/SplitCap.exe # splitcap 的路径, 用来将 pcap 分割为 session, 地址 https://www.netresec.com/?page=SplitCap
 
 train:
-  train_pcap: ./data/npy_data/784_session_all/train-pcap.npy # 训练集 pcap 的地址
-  train_statistic: ./data/npy_data/784_session_all/train-statistic.npy # 训练集 统计信息 的地址
-  train_label: ./data/npy_data/784_session_all/train-labels.npy # 训练集 label 的地址
-  test_pcap: ./data/npy_data/784_session_all/test-pcap.npy # 测试集 pcap 的地址
-  test_statistic: ./data/npy_data/784_session_all/test-statistic.npy # 测试集 统计信息 的地址
-  test_label: ./data/npy_data/784_session_all/test-labels.npy # 测试集 label 的地址
+  train_pcap: ./data/npy_data/4096_session_all/train-pcap.npy # 训练集 pcap 的地址
+  train_statistic: ./data/npy_data/4096_session_all/train-statistic.npy # 训练集 统计信息 的地址
+  train_label: ./data/npy_data/4096_session_all/train-labels.npy # 训练集 label 的地址
+  test_pcap: ./data/npy_data/4096_session_all/test-pcap.npy # 测试集 pcap 的地址
+  test_statistic: ./data/npy_data/4096_session_all/test-statistic.npy # 测试集 统计信息 的地址
+  test_label: ./data/npy_data/4096_session_all/test-labels.npy # 测试集 label 的地址
   TRIMED_FILE_LEN: 4096 # 最后减裁文件的大小
+  IMAGE_WIDTH: 64 # 二维 CNN 训练时候的大小
+  BATCH_SIZE: 128
   train_size: 0.9 # 训练集所占比例
-  epochs: 3 # 训练的轮数
+  epochs: 150 # 训练的轮数
   lr: 0.001 # learning rate
   model_dir: './checkpoint' # 模型保存的文件夹
-  model_name: 784_session_all_CENTIME.pth # 模型的名称
+  model_name: 4096_session_ResNet1d.pth # 模型的名称
 
 test:
   evaluate: True # 如果是 True, 则不进行训练, 只进行评测
