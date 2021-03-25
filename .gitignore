@@ -3,6 +3,7 @@ preprocess_data/
 # 不需要 npz, npy
 *.npz
 *.pth
+./4096_session_all/*.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
